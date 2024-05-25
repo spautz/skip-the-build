@@ -4,6 +4,7 @@
   "description": "Simple utility to switch a npm package workspace between slow-but-correct and local-but-fast modes",
   "license": "MIT",
   "main": "workspace-set-mode.js",
+  "packageManager": "pnpm@9.1.2",
   "type": "module",
   "scripts": {
   },
