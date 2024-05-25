@@ -14,7 +14,7 @@
         }
       }
     },
-    "formal": {
+    "correct": {
       "packages/*": {
         "removeEntryPoints": "./internal-raw-src"
       },
