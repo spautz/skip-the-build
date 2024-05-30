@@ -69,12 +69,12 @@ An example `workspace-modes.json` might look like:
 
 This will:
 
-* Define a "fast" mode and a "correct" mode
-* Use an `internal-raw-src` entry point for "fast" mode
-  * Packages will expose this entry point to consumers, allowing them to access `src/index.ts` directly
-  * Consumers will reference that entry point via a local import map: `#spautz/node-library-template` will resolve to
+- Define a "fast" mode and a "correct" mode
+- Use an `internal-raw-src` entry point for "fast" mode
+  - Packages will expose this entry point to consumers, allowing them to access `src/index.ts` directly
+  - Consumers will reference that entry point via a local import map: `#spautz/node-library-template` will resolve to
     the `internal-raw-src` entry point, bypassing the usual package requirements
-* Remove the `internal-raw-src` entry point in "correct" mode, and revert consumers' import maps so that they consume
+- Remove the `internal-raw-src` entry point in "correct" mode, and revert consumers' import maps so that they consume
   the package normally.
 
 Additional modes can be defined in `workspace-modes.json` as desired. For example, instead of switching _all_ packages

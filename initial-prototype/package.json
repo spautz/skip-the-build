@@ -6,8 +6,7 @@
   "main": "workspace-set-mode.js",
   "packageManager": "pnpm@9.1.2",
   "type": "module",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
     "glob": "10.3.16",
     "lodash": "4.17.21",
