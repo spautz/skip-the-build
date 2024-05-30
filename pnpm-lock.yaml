@@ -108,31 +108,7 @@ importers:
         specifier: 1.0.0-pre.53
         version: 1.0.0-pre.53
 
-  demos/hello-world-cli:
-    dependencies:
-      '@spautz/node-library-template':
-        specifier: workspace:^
-        version: link:../../packages/node-library-template
-
-  demos/hello-world-ui:
-    dependencies:
-      '@spautz/node-library-template':
-        specifier: workspace:^
-        version: link:../../packages/node-library-template
-      '@spautz/react-library-template':
-        specifier: workspace:^
-        version: link:../../packages/react-library-template
-
   packages/node-library-template: {}
-
-  packages/react-library-template:
-    dependencies:
-      '@spautz/node-library-template':
-        specifier: workspace:^
-        version: link:../node-library-template
-      react:
-        specifier: ^16.9.0 || ^17 || ^18
-        version: 18.3.1
 
 packages:
 
@@ -4085,8 +4061,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@5.5.0-dev.20240521:
-    resolution: {integrity: sha512-52WLKX9mbRmStK1lb30KM78dSo5ssgQT8WQERYiv8JihXir4HUgwlgTz4crExojzpsGjFGFJROL/bZrhXUiOEQ==}
+  typescript@5.5.0-dev.20240529:
+    resolution: {integrity: sha512-34CFeA0HRSumpIVAIjPrDgHMSEvsoPkzoIQjQnxlXvSsVpU9fsD/f4Ot4VJmRyxnYV0igAAZBYONrQ82olWbag==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -6628,7 +6604,7 @@ snapshots:
     dependencies:
       semver: 7.6.2
       shelljs: 0.8.5
-      typescript: 5.5.0-dev.20240521
+      typescript: 5.5.0-dev.20240529
 
   eastasianwidth@0.2.0: {}
 
@@ -8735,7 +8711,7 @@ snapshots:
 
   typescript@5.4.5: {}
 
-  typescript@5.5.0-dev.20240521: {}
+  typescript@5.5.0-dev.20240529: {}
 
   ufo@1.5.3: {}
 
