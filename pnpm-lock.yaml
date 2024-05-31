@@ -108,7 +108,13 @@ importers:
         specifier: 1.0.0-pre.53
         version: 1.0.0-pre.53
 
-  packages/skip-the-build-cli: {}
+  packages/core: {}
+
+  packages/skip-the-build-cli:
+    dependencies:
+      '@skip-the-build/core':
+        specifier: workspace:^
+        version: link:../core
 
 packages:
 
@@ -4061,8 +4067,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@5.5.0-dev.20240529:
-    resolution: {integrity: sha512-34CFeA0HRSumpIVAIjPrDgHMSEvsoPkzoIQjQnxlXvSsVpU9fsD/f4Ot4VJmRyxnYV0igAAZBYONrQ82olWbag==}
+  typescript@5.5.0-dev.20240530:
+    resolution: {integrity: sha512-r/4r/a9tbtPRHfif0An0GLycB70C3ci3m9fhpgiv6Ekyl7mxYc4w8aX/R+vQ4OJlmPosJJUCjUbljH11g6C56g==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -6604,7 +6610,7 @@ snapshots:
     dependencies:
       semver: 7.6.2
       shelljs: 0.8.5
-      typescript: 5.5.0-dev.20240529
+      typescript: 5.5.0-dev.20240530
 
   eastasianwidth@0.2.0: {}
 
@@ -8711,7 +8717,7 @@ snapshots:
 
   typescript@5.4.5: {}
 
-  typescript@5.5.0-dev.20240529: {}
+  typescript@5.5.0-dev.20240530: {}
 
   ufo@1.5.3: {}
 
