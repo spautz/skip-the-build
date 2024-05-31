@@ -1,6 +1,6 @@
 {
   "name": "@skip-the-build/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Speed up local dev by using libraries without building them",
   "keywords": [],
   "license": "MIT",
