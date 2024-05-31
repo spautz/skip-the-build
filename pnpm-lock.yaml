@@ -108,7 +108,7 @@ importers:
         specifier: 1.0.0-pre.53
         version: 1.0.0-pre.53
 
-  packages/node-library-template: {}
+  packages/skip-the-build-cli: {}
 
 packages:
 

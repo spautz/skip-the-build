@@ -1,7 +1,7 @@
 {
   "name": "@spautz/skip-the-build-workspace",
   "private": true,
-  "description": "My opinionated template for a npm library repo",
+  "description": "Speed up local dev by using libraries without building them",
   "license": "MIT",
   "homepage": "https://github.com/spautz/skip-the-build#readme",
   "bugs": "https://github.com/spautz/skip-the-build/issues",

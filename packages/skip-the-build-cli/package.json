@@ -1,15 +1,15 @@
 {
-  "name": "@spautz/node-library-template",
-  "version": "0.3.0",
-  "description": "My opinionated template for a NodeJS library",
+  "name": "skip-the-build",
+  "version": "0.0.1",
+  "description": "Speed up local dev by using libraries without building them",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/package-template/blob/main/packages/node-library-template#readme",
-  "bugs": "https://github.com/spautz/package-template/issues",
+  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/skip-the-build-cli#readme",
+  "bugs": "https://github.com/spautz/skip-the-build/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spautz/package-template.git",
-    "directory": "packages/node-library-template"
+    "url": "https://github.com/spautz/skip-the-build.git",
+    "directory": "packages/skip-the-build-cli"
   },
   "author": {
     "name": "Steven Pautz",
