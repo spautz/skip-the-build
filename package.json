@@ -1,13 +1,13 @@
 {
-  "name": "@spautz/package-workspace-mode-workspace",
+  "name": "@spautz/skip-the-build-workspace",
   "private": true,
   "description": "My opinionated template for a npm library repo",
   "license": "MIT",
-  "homepage": "https://github.com/spautz/package-workspace-mode#readme",
-  "bugs": "https://github.com/spautz/package-workspace-mode/issues",
+  "homepage": "https://github.com/spautz/skip-the-build#readme",
+  "bugs": "https://github.com/spautz/skip-the-build/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spautz/package-workspace-mode.git"
+    "url": "https://github.com/spautz/skip-the-build.git"
   },
   "author": {
     "name": "Steven Pautz",

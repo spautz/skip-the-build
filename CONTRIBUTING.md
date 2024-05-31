@@ -1,17 +1,17 @@
 # Contributing
 
-Thanks for your interest in Package-Workspace-Mode! You are very welcome to contribute.
+Thanks for your interest in Skip The Build! You are very welcome to contribute.
 
-By contributing to Package-Workspace-Mode, you agree to abide by the [code of conduct](./CODE_OF_CONDUCT.md).
+By contributing to Skip The Build, you agree to abide by the [code of conduct](./CODE_OF_CONDUCT.md).
 
 ## Reporting Bugs and Asking Questions
 
-Before opening an issue, please search the [issue tracker](https://github.com/spautz/package-workspace-mode/issues)
+Before opening an issue, please search the [issue tracker](https://github.com/spautz/skip-the-build/issues)
 to make sure your issue hasn't already been reported.
 
 ### New Features and Ideas
 
-If you are proposing a new feature, make sure to [open an issue](https://github.com/spautz/package-workspace-mode/issues/new/choose)
+If you are proposing a new feature, make sure to [open an issue](https://github.com/spautz/skip-the-build/issues/new/choose)
 to discuss your idea and make sure it is inline with the project goals.
 
 ## Setup and Development
@@ -19,9 +19,9 @@ to discuss your idea and make sure it is inline with the project goals.
 1. Fork this repository to your own GitHub account and clone it to your local device:
 
    ```
-   git clone https://github.com/your-name/package-workspace-mode.git
-   cd package-workspace-mode
-   git remote add upstream https://github.com/spautz/package-workspace-mode.git
+   git clone https://github.com/your-name/skip-the-build.git
+   cd skip-the-build
+   git remote add upstream https://github.com/spautz/skip-the-build.git
    ```
 
 2. Install the dependencies and ensure everything runs properly:
@@ -37,7 +37,7 @@ to discuss your idea and make sure it is inline with the project goals.
    git checkout -b my-topic-branch
    ```
 
-4. To test your local dev version of `package-workspace-mode` in other projects, [Yalc](https://github.com/whitecolor/yalc)
+4. To test your local dev version of `skip-the-build` in other projects, [Yalc](https://github.com/whitecolor/yalc)
    is an excellent tool.
 
 5. After you have made your changes, submit a pull request. Issues and pull requests are monitored, and you should
@@ -58,11 +58,11 @@ Your pull request is more likely to be accepted if this passes for your branch.
 
 In general, the contribution workflow looks like this:
 
-1. Open a new issue in the [Issue tracker](https://github.com/spautz/package-workspace-mode/issues).
+1. Open a new issue in the [Issue tracker](https://github.com/spautz/skip-the-build/issues).
 2. Fork the repo and set up your local development environment.
 3. Make changes in a branch in your fork.
 4. Make sure all tests pass and there are no errors.
-5. Submit a [pull request](https://github.com/spautz/package-workspace-mode/pulls), referencing any issues it addresses.
+5. Submit a [pull request](https://github.com/spautz/skip-the-build/pulls), referencing any issues it addresses.
 
 Please try to keep your pull request focused in scope and avoid including unrelated commits.
 

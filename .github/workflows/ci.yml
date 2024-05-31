@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package-name: [package-workspace-mode]
+        package-name: [skip-the-build]
 
     steps:
       - uses: actions/checkout@v3.5.3

@@ -30,7 +30,7 @@ so that you can be "fast" in local development but "correct" in CI.
 
 1. Add a `workspace-modes.json` to your workspace root. This file defines the exact settings to use for "fast" and "
    correct" mode (or other presets you might want).
-1. Run `package-workspace-mode [newMode]` to switch between the modes.
+1. Run `skip-the-build [newMode]` to switch between the modes.
 
 ### Example
 

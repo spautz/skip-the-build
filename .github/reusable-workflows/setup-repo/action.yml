@@ -1,5 +1,5 @@
 name: Setup repo (reusable)
-description: Standardized workspace setup for package-workspace-mode
+description: Standardized workspace setup for skip-the-build
 inputs:
   node-version:
     description: NodeJS version, for actions/setup-node

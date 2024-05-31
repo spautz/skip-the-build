@@ -1,5 +1,5 @@
 {
-  "name": "package-workspace-mode",
+  "name": "skip-the-build",
   "version": "0.0.1",
   "description": "Simple utility to switch a npm package workspace between slow-but-correct and local-but-fast modes",
   "license": "MIT",
