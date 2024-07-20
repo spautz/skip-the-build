@@ -23,7 +23,7 @@ jobs:
       matrix:
         package-name: [skip-the-build-cli]
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
