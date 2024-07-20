@@ -15,7 +15,9 @@ source ./scripts/helpers/helpers.sh
 # This script assumes you've already run either `setup-local-environment.sh` or
 # `setup-ci-environment.sh`
 
-for DIRECTORY in framework-tests/*/ ; do
+pnpm_or_bun run packages:publish:yalc
+
+for DIRECTORY in external-tests/*/ ; do
   pushd $DIRECTORY
 
   # Use workspace's copy of Yalc to copy over any necessary local packages, so that they'll be

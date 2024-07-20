@@ -15,12 +15,13 @@ source ./scripts/helpers/helpers.sh
 ./scripts/check-environment.sh
 
 pnpm_or_bun install --frozen-lockfile --prefer-offline
+pnpm_or_bun run packages:publish:yalc
 
-for DIRECTORY in framework-tests/*/ ; do
+for DIRECTORY in external-tests/*/ ; do
   pushd $DIRECTORY
-  echo "Framework-test checks for $DIRECTORY"
+  echo "External-test checks for $DIRECTORY"
 
-  run_command ./framework-test.sh
+  run_command ./external-test.sh
   popd
 done
 
