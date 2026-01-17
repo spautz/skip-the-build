@@ -4,12 +4,12 @@
   "description": "Speed up local dev by using libraries without building them",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/skip-the-build-cli#readme",
+  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/skip-the-build#readme",
   "bugs": "https://github.com/spautz/skip-the-build/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/spautz/skip-the-build.git",
-    "directory": "packages/skip-the-build-cli"
+    "directory": "packages/skip-the-build"
   },
   "author": {
     "name": "Steven Pautz",
@@ -80,9 +80,7 @@
     "build:verify": "publint --strict && size-limit",
     "build:verifypack": "ls *.tgz | xargs -I {} attw {} --exclude-entrypoints internal-raw-src"
   },
-  "dependencies": {
-    "@skip-the-build/core": "workspace:^"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {},
   "size-limit": [

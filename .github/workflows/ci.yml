@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package-name: [skip-the-build-cli]
+        package-name: [skip-the-build]
 
     steps:
       - uses: actions/checkout@v4.1.7
