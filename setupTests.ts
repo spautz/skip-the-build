@@ -1,1 +1,1 @@
-// nothing to do
+import './packages/react-library-template/setupTests.ts';
