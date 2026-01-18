@@ -26,17 +26,19 @@ jobs:
         package-name: [skip-the-build]
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v6.0.1
 
       - uses: ./.github/reusable-workflows/setup-repo
+        with:
+          node-version: nvmrc
 
       - name: Run package tests
         run: |
           cd packages/${{ matrix.package-name }}
-          pnpm run test
+          pnpm exec turbo run test:ci
 
       - name: Report package test coverage to coveralls.io
-        uses: coverallsapp/github-action@v2.3.0
+        uses: coverallsapp/github-action@v2.3.6
         with:
           github-token: ${{ github.token }}
           path-to-lcov: packages/${{ matrix.package-name }}/coverage/lcov.info

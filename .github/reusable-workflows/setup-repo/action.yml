@@ -1,5 +1,5 @@
 name: Setup repo (reusable)
-description: Standardized workspace setup for skip-the-build
+description: Standardized workspace setup for package-template
 inputs:
   node-version:
     description: NodeJS version, for actions/setup-node
@@ -12,21 +12,22 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: pnpm/action-setup@v4.0.0
+    - uses: pnpm/action-setup@v4.2.0
 
-    - uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.4.0
       if: ${{ inputs.node-version == 'nvmrc' }}
       with:
         node-version-file: .nvmrc
         registry-url: 'https://registry.npmjs.org'
         cache: 'pnpm'
-    - uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.4.0
       if: ${{ inputs.node-version != 'nvmrc' }}
       with:
         node-version: ${{ inputs.node-version }}
         registry-url: 'https://registry.npmjs.org'
+        cache: 'pnpm'
 
-    - uses: oven-sh/setup-bun@v2.0.1
+    - uses: oven-sh/setup-bun@v2.0.2
       with:
         bun-version: latest
 

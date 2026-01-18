@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x, latest]
+        node-version: [20.x, 22.x, 24.x, latest]
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v6.0.1
         with:
           fetch-depth: 0
 
@@ -32,7 +32,7 @@ jobs:
           pnpm run all:ci
 
       - name: Report test coverage to coveralls.io
-        uses: coverallsapp/github-action@v2.3.0
+        uses: coverallsapp/github-action@v2.3.6
         with:
           github-token: ${{ github.token }}
 
@@ -44,13 +44,33 @@ jobs:
         package-name: [skip-the-build]
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v6.0.1
 
       - uses: ./.github/reusable-workflows/setup-repo
         with:
-          node-version: latest
+          node-version: nvmrc
 
       - name: Run CI checks for package
         run: |
           cd packages/${{ matrix.package-name }}
+          pnpm run all:ci
+
+  demo-ci:
+    name: Demo CI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        demo-name: [hello-world-cli, hello-world-ui]
+
+    steps:
+      - uses: actions/checkout@v6.0.1
+
+      - uses: ./.github/reusable-workflows/setup-repo
+        with:
+          node-version: lts/*
+          use-lockfile: false
+
+      - name: Run CI checks for demo
+        run: |
+          cd demos/${{ matrix.demo-name }}
           pnpm run all:ci
