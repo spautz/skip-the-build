@@ -1,1 +1,1 @@
-export * from './helloWorld.js';
+export * from './config.ts';
