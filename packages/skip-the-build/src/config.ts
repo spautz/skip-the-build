@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 
-const configSchema = z.strictObject({
+const internal_configSchema = z.strictObject({
   whenToSkip: z.strictObject({
     default: z.boolean(),
     envRules: z.array(z.string()).optional(),
@@ -11,7 +11,7 @@ const configSchema = z.strictObject({
   }),
 });
 
-type SkipTheBuildConfig = z.infer<typeof configSchema>;
+type SkipTheBuildConfig = z.infer<typeof internal_configSchema>;
 
 export type { SkipTheBuildConfig };
-export { configSchema };
+export { internal_configSchema };

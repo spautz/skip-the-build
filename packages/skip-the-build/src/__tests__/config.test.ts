@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest';
 
-import { configSchema } from '../index.js';
+import { internal_configSchema } from '../index.js';
 
 describe('config', () => {
-  describe('configSchema', () => {
+  describe('internal_configSchema', () => {
     test('accepts valid objects', () => {
-      const result = configSchema.safeParse({
+      const result = internal_configSchema.safeParse({
         whenToSkip: {
           default: true,
         },
@@ -17,7 +17,7 @@ describe('config', () => {
     });
 
     test('rejects invalid objects', () => {
-      const result = configSchema.safeParse({});
+      const result = internal_configSchema.safeParse({});
       expect(result.error).toBeTruthy();
       expect(result.error?.name).toBe('ZodError');
     });

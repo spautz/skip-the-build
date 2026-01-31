@@ -155,6 +155,48 @@ importers:
       tsdown:
         specifier: 'catalog:'
         version: 0.18.4(@arethetypeswrong/core@0.18.2)(@typescript/native-preview@7.0.0-dev.20251202.1)(publint@0.3.16)(typescript@5.9.3)
+      vite:
+        specifier: 'catalog:'
+        version: 7.3.0(@types/node@24.5.1)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.16(@types/node@24.5.1)(@vitest/ui@4.0.16)(jiti@2.6.1)(jsdom@27.4.0(postcss@8.5.6))(terser@5.44.0)(yaml@2.8.1)
+
+  packages/vite-adapter:
+    devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.2
+      '@size-limit/esbuild':
+        specifier: 'catalog:'
+        version: 12.0.0(size-limit@12.0.0(jiti@2.6.1))
+      '@size-limit/esbuild-why':
+        specifier: 'catalog:'
+        version: 12.0.0(size-limit@12.0.0(jiti@2.6.1))
+      '@size-limit/file':
+        specifier: 'catalog:'
+        version: 12.0.0(size-limit@12.0.0(jiti@2.6.1))
+      publint:
+        specifier: 'catalog:'
+        version: 0.3.16
+      size-limit:
+        specifier: 'catalog:'
+        version: 12.0.0(jiti@2.6.1)
+      skip-the-build:
+        specifier: workspace:*
+        version: link:../skip-the-build
+      source-map-explorer:
+        specifier: 'catalog:'
+        version: 2.5.3
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.18.4(@arethetypeswrong/core@0.18.2)(@typescript/native-preview@7.0.0-dev.20251202.1)(publint@0.3.16)(typescript@5.9.3)
+      vite:
+        specifier: 'catalog:'
+        version: 7.3.0(@types/node@24.5.1)(jiti@2.6.1)(terser@5.44.0)(yaml@2.8.1)
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.16(@types/node@24.5.1)(@vitest/ui@4.0.16)(jiti@2.6.1)(jsdom@27.4.0(postcss@8.5.6))(terser@5.44.0)(yaml@2.8.1)
 
 packages:
 

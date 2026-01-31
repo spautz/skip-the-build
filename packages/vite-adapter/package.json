@@ -1,15 +1,15 @@
 {
-  "name": "skip-the-build",
+  "name": "@skip-the-build/vite",
   "version": "0.0.2",
-  "description": "Speed up local dev by using local libraries without building them",
+  "description": "Vite adapter for skip-the-build",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/skip-the-build#readme",
+  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/vite-adapter#readme",
   "bugs": "https://github.com/spautz/skip-the-build/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spautz/skip-the-build.git",
-    "directory": "packages/skip-the-build"
+    "directory": "packages/vite-adapter"
   },
   "author": {
     "name": "Steven Pautz",
@@ -73,9 +73,7 @@
     "build:verifypack": "ls *.tgz | xargs -I {} attw {} --exclude-entrypoints internal-raw-src",
     "size-check": "size-limit --why"
   },
-  "dependencies": {
-    "zod": "^4.3.6"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@size-limit/esbuild": "catalog:",
@@ -83,12 +81,16 @@
     "@size-limit/file": "catalog:",
     "publint": "catalog:",
     "size-limit": "catalog:",
+    "skip-the-build": "workspace:*",
     "source-map-explorer": "catalog:",
     "tsdown": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "skip-the-build": "workspace:^",
+    "vite": "^4"
+  },
   "size-limit": [
     {
       "path": "./dist/esm/index.js",
@@ -97,7 +99,7 @@
     },
     {
       "path": "./dist/esm/index.js",
-      "import": "{ evaluateConfig }",
+      "import": "{ getViteConfig }",
       "limit": "75 KB"
     }
   ]
