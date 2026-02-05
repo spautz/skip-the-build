@@ -1,8 +1,13 @@
-import { internal_configSchema, type SkipTheBuildConfig } from './config.ts';
+import {
+  type Internal_Rule,
+  internal_configSchema,
+  type SkipTheBuildConfig,
+} from './configSchema.ts';
 
 // Simple local cache to avoid re-parsing the config repeatedly
 let lastRawConfig: SkipTheBuildConfig;
 let lastParsedConfig: SkipTheBuildConfig;
+let lastConfigPassed: boolean;
 
 // @TODO: future expansion: V1, V2, etc
 const internal_parseConfig = (rawConfig: SkipTheBuildConfig): SkipTheBuildConfig => {
@@ -13,27 +18,66 @@ const internal_parseConfig = (rawConfig: SkipTheBuildConfig): SkipTheBuildConfig
   return lastParsedConfig;
 };
 
-// This is async because future checks will be
-const evaluateConfig = async (rawConfig: SkipTheBuildConfig): Promise<boolean> => {
-  const parsedConfig = internal_parseConfig(rawConfig);
+const internal_evaluateRule = async (rule: Internal_Rule): Promise<boolean> => {
+  if (rule instanceof Promise) {
+    // @ts-expect-error Circular reference (by design)
+    return internal_evaluateRule(await rule);
+  }
+  if (typeof rule === 'function') {
+    // @ts-expect-error Typescript can't narrow this nicely
+    return rule();
+  }
+  // if (typeof rule !== 'boolean') {
+  //   // @TODO: warning
+  // }
 
-  // @TODO: proper evaluation of env and branch names
-  return parsedConfig.whenToSkip.default;
+  return rule;
+};
+
+const evaluateConfig = async (rawConfig: SkipTheBuildConfig): Promise<boolean> => {
+  if (rawConfig !== lastRawConfig) {
+    const { skipWhen, neverSkipWhen } = internal_parseConfig(rawConfig);
+
+    let passed = true;
+    if (skipWhen) {
+      // Proceed if any are true
+      passed = false;
+      for (const rule of skipWhen) {
+        if (await internal_evaluateRule(rule)) {
+          passed = true;
+          break;
+        }
+      }
+    }
+
+    if (passed && neverSkipWhen) {
+      // Halt if any are true
+      for (const rule of neverSkipWhen) {
+        if (await internal_evaluateRule(rule)) {
+          passed = false;
+          break;
+        }
+      }
+    }
+    lastConfigPassed = passed;
+  }
+
+  return lastConfigPassed;
 };
 
 const getResolveConditions = async (rawConfig: SkipTheBuildConfig): Promise<Array<string>> => {
   if (await evaluateConfig(rawConfig)) {
     const parsedConfig = internal_parseConfig(rawConfig);
-    const { importConditionName } = parsedConfig.settings;
+    const { exportConditionName } = parsedConfig.settings;
 
-    if (Array.isArray(importConditionName)) {
-      return importConditionName;
+    if (Array.isArray(exportConditionName)) {
+      return exportConditionName;
     }
-    if (importConditionName) {
-      return [importConditionName];
+    if (exportConditionName) {
+      return [exportConditionName];
     }
   }
   return [];
 };
 
-export { internal_parseConfig, evaluateConfig, getResolveConditions };
+export { internal_parseConfig, internal_evaluateRule, evaluateConfig, getResolveConditions };

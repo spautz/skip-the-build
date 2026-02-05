@@ -23,11 +23,8 @@ describe('maybeSkipTheBuild', () => {
     };
 
     const mockSkipTheBuildConfig: SkipTheBuildConfig = {
-      whenToSkip: {
-        default: true,
-      },
       settings: {
-        importConditionName: ['mockCondition'],
+        exportConditionName: ['mockCondition'],
       },
     };
 
@@ -47,11 +44,8 @@ describe('maybeSkipTheBuild', () => {
     };
 
     const mockSkipTheBuildConfig: SkipTheBuildConfig = {
-      whenToSkip: {
-        default: true,
-      },
       settings: {
-        importConditionName: ['duplicateCondition', 'mockCondition'],
+        exportConditionName: ['duplicateCondition', 'mockCondition'],
       },
     };
 
@@ -73,11 +67,8 @@ describe('maybeSkipTheBuild', () => {
     };
 
     const mockSkipTheBuildConfig: SkipTheBuildConfig = {
-      whenToSkip: {
-        default: true,
-      },
       settings: {
-        importConditionName: ['mockCondition'],
+        exportConditionName: ['mockCondition'],
       },
     };
 

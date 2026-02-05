@@ -1,2 +1,2 @@
-export * from './config.ts';
+export * from './configSchema.ts';
 export * from './processConfig.ts';
