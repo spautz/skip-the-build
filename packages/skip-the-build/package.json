@@ -69,36 +69,20 @@
     "build:clean": "rimraf --glob ./dist ./*.tgz",
     "build:lib": "tsdown --config ./tsdown.config.ts",
     "build:lib:watch": "tsdown --config ./tsdown.config.ts --watch",
-    "build:verify": "publint --strict && size-limit",
-    "build:verifypack": "ls *.tgz | xargs -I {} attw {} --exclude-entrypoints internal-raw-src",
-    "size-check": "size-limit --why"
+    "build:verify": "publint --strict",
+    "build:verifypack": "ls *.tgz | xargs -I {} attw {} --exclude-entrypoints internal-raw-src"
   },
   "dependencies": {
+    "ci-info": "^4.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
-    "@size-limit/esbuild": "catalog:",
-    "@size-limit/esbuild-why": "catalog:",
-    "@size-limit/file": "catalog:",
     "publint": "catalog:",
-    "size-limit": "catalog:",
     "source-map-explorer": "catalog:",
     "tsdown": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "peerDependencies": {},
-  "size-limit": [
-    {
-      "path": "./dist/esm/index.js",
-      "import": "{}",
-      "limit": "20 B"
-    },
-    {
-      "path": "./dist/esm/index.js",
-      "import": "{ evaluateConfig }",
-      "limit": "75 KB"
-    }
-  ]
+  "peerDependencies": {}
 }

@@ -24,8 +24,7 @@ const internal_evaluateRule = async (rule: Internal_Rule): Promise<boolean> => {
     return internal_evaluateRule(await rule);
   }
   if (typeof rule === 'function') {
-    // @ts-expect-error Typescript can't narrow this nicely
-    return rule();
+    return internal_evaluateRule(rule());
   }
   // if (typeof rule !== 'boolean') {
   //   // @TODO: warning
@@ -43,6 +42,8 @@ const evaluateConfig = async (rawConfig: SkipTheBuildConfig): Promise<boolean> =
       // Proceed if any are true
       passed = false;
       for (const rule of skipWhen) {
+        // Rules should all be very very fast -- more overhead to *start* a rule than to run it --
+        // so we'll just await in turn. Parallelizing would be more wasteful than it's worth here.
         if (await internal_evaluateRule(rule)) {
           passed = true;
           break;

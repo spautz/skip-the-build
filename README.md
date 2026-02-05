@@ -177,9 +177,10 @@ A preset is a full set of rules for a common scenario. All presets use `exportCo
 import { presets } from 'skip-the-build';
 ```
 
-| Preset name     | Notes                                                                                                                                                                                                                                                                          |
-|:----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `default`       | Skips the build locally but not in CI                                                                                                                                                                                                                                          |
+| Preset name   | Notes                                                      |
+|:--------------|------------------------------------------------------------|
+| `default`     | Skips the build locally but not in CI                      |
+| `devModeOnly` | Skips the build when NODE_ENV !== "production", local only |
 
 ### Rules
 
@@ -192,21 +193,26 @@ pick the one which is most readable for your case.
 
 #### Environment conditions
 
-| Rule                          | Returns true if:                                                                                   |
-|:------------------------------|----------------------------------------------------------------------------------------------------|
-| `isCI`                        | The `CI` environment variable has been set                                                         |
-| `isLocalDev`                  | No `CI` environment variable has _not_ been set                                                    |
-| `hasEnv(name, value?)`        | The specified environment variable has been set, and matches the given value (if any)              |
-| `noEnv(name, value?)`         | The specified environment variable has _not_ been set, and does not match the given value (if any) |
-| `notCI`                       | The `CI` environment variable has _not_ been set                                                   |
-| `notLocalDev`                 | No `CI` environment variable has been set                                                          |
+| Rule                                  | Returns true if:                                                                 |
+|:--------------------------------------|----------------------------------------------------------------------------------|
+| `envVarExists(name)`                  | The env variable has been set at all                                             |
+| `envVarHasValue(name, value\|values)` | The env variable has been set, and it's one of the values provided               |
+| `envVarIsDisabled(name)`              | The env var has either not been set, or it's set to ``, `false`, or `0`          |
+| `envVarIsEnabled(name)`               | The env var has been set, and it's not ``, `false`, or `0`                       |
+| `isCI`                                | [ci-info](https://www.npmjs.com/package/ci-info) detected a CI environment       |
+| `isDevelopmentMode`                   | `NODE_ENV !== "production"`                                                      |
+| `isProductionMode`                    | `NODE_ENV === "production"`                                                      |
+| `isPullRequest`                       | [ci-info](https://www.npmjs.com/package/ci-info) detected a PR                   |
+| `notCI`                               | [ci-info](https://www.npmjs.com/package/ci-info) did not detect a CI environment |
+| `notPullRequest`                      | [ci-info](https://www.npmjs.com/package/ci-info) did not detect a PR             |
 
 #### Repo conditions
 
-| Rule                          | Returns true if:                                                        |
-|:------------------------------|-------------------------------------------------------------------------|
-| `isGitBranch(string\|regex)`  | The current git branch matches the string or pattern provided           |
-| `notGitBranch(string\|regex)` | The current git branch does _not_ matche the string or pattern provided |
+| Rule                          | Returns true if:                                            |
+|:------------------------------|-------------------------------------------------------------|
+| `isGitBranch(string\|regex)`  | The current git branch matches the string or pattern        |
+| `notGitBranch(string\|regex)` | The current git branch does not match the string or pattern |
+| `isShallowClone`              | The current git repo is a shallow repository                |
 
 #### General conditions
 

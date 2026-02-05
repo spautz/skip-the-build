@@ -1,2 +1,7 @@
-export * from './configSchema.ts';
-export * from './processConfig.ts';
+export * from './configSchema.js';
+export * from './processConfig.js';
+
+export * from './rules/allRules.ts';
+export * from './rules/environmentRules.ts';
+export * from './rules/generalRules.ts';
+export * from './rules/gitRules.ts';
