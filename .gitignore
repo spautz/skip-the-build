@@ -57,6 +57,7 @@ playwright-report/
 .next/
 .react-router/
 .turbo/
+.yalc/
 _fresh/
 build/
 dist/
@@ -69,10 +70,6 @@ packages/*/*.tgz
 # storybook
 
 storybook-static/
-
-# external-tests
-
-external-tests/*/.yalc/
 
 # misc
 

@@ -1,15 +1,15 @@
 {
-  "name": "@skip-the-build/vite",
+  "name": "@skip-the-build/webpack",
   "version": "0.0.2",
   "description": "Vite adapter for skip-the-build",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/vite-adapter#readme",
+  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/webpack-adapter#readme",
   "bugs": "https://github.com/spautz/skip-the-build/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spautz/skip-the-build.git",
-    "directory": "packages/vite-adapter"
+    "directory": "packages/webpack-adapter"
   },
   "author": {
     "name": "Steven Pautz",
@@ -84,6 +84,6 @@
   },
   "peerDependencies": {
     "skip-the-build": "workspace:^",
-    "vite": "^7.0.0"
+    "webpack": "^5.0.0"
   }
 }
