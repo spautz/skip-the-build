@@ -92,7 +92,7 @@ import { maybeSkipTheBuild } from '@skip-the-build/vite'
 import skipTheBuildConfig from 'your/local/skip-the-build.ts';
 
 const viteConfig = defineConfig(
-  maybeSkipTheBuild(skipTheBuildConfig, {
+  await maybeSkipTheBuild(skipTheBuildConfig, {
     // rest of your Vite config
     // ...
   }
@@ -177,10 +177,11 @@ A preset is a full set of rules for a common scenario. All presets use `exportCo
 import { presets } from 'skip-the-build';
 ```
 
-| Preset name   | Notes                                                      |
-|:--------------|------------------------------------------------------------|
-| `default`     | Skips the build locally but not in CI                      |
-| `devModeOnly` | Skips the build when NODE_ENV !== "production", local only |
+| Preset name   | When it skips              | Notes                                                                        |
+|:--------------|----------------------------|------------------------------------------------------------------------------|
+| `default`     | Running locally            | Fast for local dev, slow/correct for CI                                      |
+| `devModeOnly` | Running dev builds locally | Extra safe: fast for hot reload and local tests, slow/correct for all builds |
+| `envVarOnly`  | `env.SKIP_THE_BUILD=1`     | For testing                                                                  |
 
 ### Rules
 
@@ -225,3 +226,10 @@ pick the one which is most readable for your case.
 | Any function    | The function returns true, or a promise that resolves to true               |
 | Any promise     | The promise resolves to true                                                |
 | Any other value | The value is exactly true                                                   |
+
+
+
+<!--
+2.3s when skipped for "Hello World"
+8.7s with all-modern tooling
+-->

@@ -1,4 +1,5 @@
 export * from './configSchema.js';
+export * from './presets/presets.ts';
 export * from './processConfig.js';
 
 export * from './rules/allRules.ts';

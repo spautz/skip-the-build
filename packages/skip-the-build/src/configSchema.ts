@@ -22,5 +22,7 @@ const internal_configSchema = z.strictObject({
 
 type SkipTheBuildConfig = z.infer<typeof internal_configSchema>;
 
+const defineSkipTheBuildConfig = (config: SkipTheBuildConfig) => config;
+
 export type { Internal_Rule, SkipTheBuildConfig };
-export { internal_configSchema };
+export { internal_configSchema, defineSkipTheBuildConfig };
