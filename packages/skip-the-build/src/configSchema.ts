@@ -12,7 +12,16 @@ const internal_ruleSchema: z.ZodType<Internal_Rule> = z.lazy(() =>
   ]),
 );
 
+// Ensure the schema matches our manual type
+null as unknown as Internal_Rule satisfies z.infer<typeof internal_ruleSchema>;
+
 const internal_configSchema = z.strictObject({
+  get extend() {
+    // Recurse
+    return z
+      .union([internal_configSchema.partial(), z.array(internal_configSchema.partial())])
+      .optional();
+  },
   skipWhen: z.array(internal_ruleSchema).optional(),
   neverSkipWhen: z.array(internal_ruleSchema).optional(),
   settings: z.strictObject({
@@ -20,9 +29,19 @@ const internal_configSchema = z.strictObject({
   }),
 });
 
-type SkipTheBuildConfig = z.infer<typeof internal_configSchema>;
+type SkipTheBuildConfig = {
+  extend?: Partial<SkipTheBuildConfig> | Array<Partial<SkipTheBuildConfig>> | undefined;
+  skipWhen?: Array<Internal_Rule>;
+  neverSkipWhen?: Array<Internal_Rule>;
+  settings: {
+    exportConditionName: string | Array<string>;
+  };
+};
 
-const defineSkipTheBuildConfig = (config: SkipTheBuildConfig) => config;
+// Ensure the schema matches our manual type
+null as unknown as SkipTheBuildConfig satisfies z.infer<typeof internal_configSchema>;
+
+const defineSkipTheBuildConfig = (config: SkipTheBuildConfig): SkipTheBuildConfig => config;
 
 export type { Internal_Rule, SkipTheBuildConfig };
 export { internal_configSchema, defineSkipTheBuildConfig };

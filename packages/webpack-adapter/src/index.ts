@@ -1,4 +1,4 @@
-// import { getResolveConditions, type SkipTheBuildConfig } from 'skip-the-build';
+// import { getExportConditions, type SkipTheBuildConfig } from 'skip-the-build';
 //
 // const defaultConditionsForWebpack = ['import', 'require', 'default'];
 
@@ -11,7 +11,7 @@ const internal_createWebpackConfigForImportConditions = (importConditions: Array
 };
 
 // const getWebpackConfig = async (skipTheBuildConfig: SkipTheBuildConfig): Promise<UserConfig> => {
-//   const resolveConditions = await getResolveConditions(skipTheBuildConfig);
+//   const resolveConditions = await getExportConditions(skipTheBuildConfig);
 //   return internal_createWebpackConfigForImportConditions(resolveConditions);
 // };
 //
@@ -19,7 +19,7 @@ const internal_createWebpackConfigForImportConditions = (importConditions: Array
 //   skipTheBuildConfig: SkipTheBuildConfig,
 //   otherConditionsToInclude?: Array<string>,
 // ): Promise<Array<string>> => {
-//   const resolveConditions = await getResolveConditions(skipTheBuildConfig);
+//   const resolveConditions = await getExportConditions(skipTheBuildConfig);
 //   const allConditions = [
 //     ...resolveConditions,
 //     ...(otherConditionsToInclude || []),

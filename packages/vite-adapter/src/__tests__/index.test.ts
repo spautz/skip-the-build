@@ -2,93 +2,137 @@ import type { SkipTheBuildConfig } from 'skip-the-build';
 import type { UserConfig } from 'vite';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { maybeSkipTheBuild } from '../index.ts';
+import { getViteConfig, withSkipTheBuild } from '../index.ts';
 
-// @FIXME: Unreviewed AI-generated tests, need to review and expand
-
-vi.mock('vite', () => ({
-  mergeConfig: vi.fn((baseConfig, newConfig) => ({ ...baseConfig, ...newConfig })),
-}));
+/*
+ * Vite fails when imported in Vitest, due to an ESBuild environment check, so we mock it.
+ * End-to-end behavior is validated by the demo-apps and external-tests.
+ */
+vi.mock('vite');
 
 beforeEach(() => {
   vi.clearAllMocks();
 });
 
-describe('maybeSkipTheBuild', () => {
-  test('merges baseViteConfig with generated config', async () => {
-    const mockBaseConfig: UserConfig = {
-      resolve: {
-        conditions: ['mockBaseCondition'],
-      },
-    };
+describe('@skip-the-build/vite', () => {
+  describe('getViteConfig()', () => {
+    test('returns overrides UserConfig when skipping', async () => {
+      const skipTheBuildConfig: SkipTheBuildConfig = {
+        skipWhen: [true],
+        settings: {
+          exportConditionName: ['my-condition'],
+        },
+      };
 
-    const mockSkipTheBuildConfig: SkipTheBuildConfig = {
-      settings: {
-        exportConditionName: ['mockCondition'],
-      },
-    };
+      const result: UserConfig = await getViteConfig(skipTheBuildConfig);
 
-    const result = await maybeSkipTheBuild(mockSkipTheBuildConfig, mockBaseConfig);
+      expect(result).toEqual({
+        resolve: {
+          conditions: ['my-condition'],
+        },
+      });
+    });
 
-    expect(result.resolve?.conditions).toContain('mockBaseCondition');
-    expect(result.resolve?.conditions).toContain('import');
-    expect(result.resolve?.conditions).toContain('default');
-    expect(result.resolve?.conditions).toContain('mockCondition');
+    test('returns overrides UserConfig when not-skipping', async () => {
+      const skipTheBuildConfig: SkipTheBuildConfig = {
+        skipWhen: [false],
+        settings: {
+          exportConditionName: ['my-condition'],
+        },
+      };
+
+      const result: UserConfig = await getViteConfig(skipTheBuildConfig);
+
+      expect(result).toEqual({
+        resolve: {
+          conditions: [],
+        },
+      });
+    });
   });
 
-  test('ensures configurations are unique after merging', async () => {
-    const mockBaseConfig: UserConfig = {
-      resolve: {
-        conditions: ['duplicateCondition', 'mockBaseCondition'],
-      },
-    };
+  describe('withSkipTheBuild()', () => {
+    test('Merges configs with `mergeConfig`', async () => {
+      const { mergeConfig: mergeConfigMock } = await import('vite');
 
-    const mockSkipTheBuildConfig: SkipTheBuildConfig = {
-      settings: {
-        exportConditionName: ['duplicateCondition', 'mockCondition'],
-      },
-    };
+      const skipTheBuildConfig: SkipTheBuildConfig = {
+        skipWhen: [true],
+        settings: {
+          exportConditionName: ['my-condition'],
+        },
+      };
+      const baseConfig: UserConfig = {
+        build: {
+          sourcemap: true,
+        },
+      };
 
-    const result = await maybeSkipTheBuild(mockSkipTheBuildConfig, mockBaseConfig);
+      const result = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
 
-    const resolvedConditions = result.resolve?.conditions || [];
-    expect(resolvedConditions).toHaveLength(new Set(resolvedConditions).size); // Assert uniqueness
-    expect(resolvedConditions).toContain('mockCondition');
-    expect(resolvedConditions).toContain('import');
-    expect(resolvedConditions).toContain('default');
-    expect(resolvedConditions).toContain('duplicateCondition');
-  });
+      expect(mergeConfigMock).toHaveBeenCalledOnce();
+      expect(mergeConfigMock).toHaveBeenCalledWith(
+        {
+          resolve: {
+            conditions: ['my-condition'],
+          },
+        },
+        baseConfig,
+      );
+      // These check should always pass (since `mergeConfig` is mocked), but it's an extra
+      // safety net just in case
+      expect(result).not.toBe(skipTheBuildConfig);
+      expect(result).not.toBe(baseConfig);
+      expect(result).toEqual({
+        build: {
+          sourcemap: true,
+        },
+        resolve: {
+          conditions: ['my-condition'],
+        },
+      });
+    });
 
-  test('calls mergeConfig with correct arguments', async () => {
-    const mockBaseConfig: UserConfig = {
-      resolve: {
-        conditions: ['mockBaseCondition'],
-      },
-    };
+    test('Merges configs with `mergeConfig`, when baseConfig already has conditions', async () => {
+      const { mergeConfig: mergeConfigMock } = await import('vite');
 
-    const mockSkipTheBuildConfig: SkipTheBuildConfig = {
-      settings: {
-        exportConditionName: ['mockCondition'],
-      },
-    };
+      const skipTheBuildConfig: SkipTheBuildConfig = {
+        skipWhen: [true],
+        settings: {
+          exportConditionName: ['my-condition'],
+        },
+      };
+      const baseConfig: UserConfig = {
+        build: {
+          sourcemap: true,
+        },
+        resolve: {
+          conditions: ['existing-condition-in-config'],
+        },
+      };
 
-    const { mergeConfig } = await import('vite');
+      const result = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
 
-    await maybeSkipTheBuild(mockSkipTheBuildConfig, mockBaseConfig);
-
-    expect(mergeConfig).toHaveBeenCalledOnce();
-    expect(mergeConfig).toHaveBeenCalledWith(
-      mockBaseConfig,
-      expect.objectContaining({
-        resolve: expect.objectContaining({
-          conditions: expect.arrayContaining([
-            'mockBaseCondition',
-            'mockCondition',
-            'import',
-            'default',
-          ]),
-        }),
-      }),
-    );
+      expect(mergeConfigMock).toHaveBeenCalledOnce();
+      expect(mergeConfigMock).toHaveBeenCalledWith(
+        {
+          resolve: {
+            conditions: ['my-condition'],
+          },
+        },
+        baseConfig,
+      );
+      // These check should always pass (since `mergeConfig` is mocked), but it's an extra
+      // safety net just in case
+      expect(result).not.toBe(skipTheBuildConfig);
+      expect(result).not.toBe(baseConfig);
+      expect(result).toEqual({
+        build: {
+          sourcemap: true,
+        },
+        resolve: {
+          conditions: ['my-condition', 'existing-condition-in-config'],
+        },
+      });
+    });
   });
 });

@@ -3,17 +3,43 @@ import {
   internal_configSchema,
   type SkipTheBuildConfig,
 } from './configSchema.ts';
+import { deepMerge } from './utils.ts';
+
+// Parsing applies any base configs
+type ParsedConfig = Omit<SkipTheBuildConfig, 'extend'>;
 
 // Simple local cache to avoid re-parsing the config repeatedly
 let lastRawConfig: SkipTheBuildConfig;
-let lastParsedConfig: SkipTheBuildConfig;
-let lastConfigPassed: boolean;
+let lastParsedConfig: ParsedConfig;
+let lastConfigDidSkip: boolean;
+
+const internal_applyExtendsToConfig = (config: SkipTheBuildConfig): ParsedConfig => {
+  const { extend, ...otherFields } = config;
+
+  if (extend) {
+    const allConfigsToMerge = [...(Array.isArray(extend) ? extend : [extend]), { ...otherFields }];
+    const parsedConfig = allConfigsToMerge.reduce<ParsedConfig>((acc, configToMerge) => {
+      // Recurse in case the extended config extend other configs
+      return deepMerge(acc, internal_applyExtendsToConfig(configToMerge as SkipTheBuildConfig));
+    }, {} as ParsedConfig);
+
+    return parsedConfig;
+  }
+  // else: nothing to do
+  return { ...otherFields };
+};
 
 // @TODO: future expansion: V1, V2, etc
-const internal_parseConfig = (rawConfig: SkipTheBuildConfig): SkipTheBuildConfig => {
+const internal_parseConfig = (rawConfig: SkipTheBuildConfig): ParsedConfig => {
   if (rawConfig !== lastRawConfig) {
+    // First make sure it's valid
+    const validatedConfig = internal_configSchema.parse(rawConfig) as SkipTheBuildConfig;
+
+    // Then apply any `extend`ed configs, recursively
+    const parsedConfig = internal_applyExtendsToConfig(validatedConfig);
+
     lastRawConfig = rawConfig;
-    lastParsedConfig = internal_configSchema.parse(rawConfig);
+    lastParsedConfig = parsedConfig;
   }
   return lastParsedConfig;
 };
@@ -60,13 +86,14 @@ const evaluateConfig = async (rawConfig: SkipTheBuildConfig): Promise<boolean> =
         }
       }
     }
-    lastConfigPassed = passed;
+    lastRawConfig = rawConfig;
+    lastConfigDidSkip = passed;
   }
 
-  return lastConfigPassed;
+  return lastConfigDidSkip;
 };
 
-const getResolveConditions = async (rawConfig: SkipTheBuildConfig): Promise<Array<string>> => {
+const getExportConditions = async (rawConfig: SkipTheBuildConfig): Promise<Array<string>> => {
   if (await evaluateConfig(rawConfig)) {
     const parsedConfig = internal_parseConfig(rawConfig);
     const { exportConditionName } = parsedConfig.settings;
@@ -81,4 +108,4 @@ const getResolveConditions = async (rawConfig: SkipTheBuildConfig): Promise<Arra
   return [];
 };
 
-export { internal_parseConfig, internal_evaluateRule, evaluateConfig, getResolveConditions };
+export { internal_parseConfig, internal_evaluateRule, evaluateConfig, getExportConditions };

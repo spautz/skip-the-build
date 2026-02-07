@@ -16,6 +16,7 @@
     "includes": [
       // These are in addition to .gitignore
       "**",
+      "!**/.yalc",
       "!**/*.log",
       "!package-lock.json",
       "!pnpm-lock.yaml",

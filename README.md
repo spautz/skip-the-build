@@ -54,7 +54,7 @@ export default defineConfig({
 });
 ```
 
-Or use a preset:
+Or use a preset. Multiple presets are allowed if you wish.
 
 ```javascript
 import { defineConfig, presets } from 'skip-the-build';
@@ -108,9 +108,10 @@ import skipTheBuildConfig from 'your/local/skip-the-build.ts';
 
 const skipTheViteBuild = await getViteConfig(skipTheBuildConfig);
 
-const viteConfig = defineConfig(
-  mergeConfig({ /* your Vite config */ }, skipTheViteBuild)
-);
+const viteConfig: UserConfig = mergeConfig(skipTheViteBuild, {
+  // your Vite config
+  // ...
+});
 ```
 
 ## Dev tools, frameworks, and build systems
