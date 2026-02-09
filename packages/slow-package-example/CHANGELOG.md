@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0
+
+### Minor Changes
+
+- Complete rewrite: move from custom scripts to Node export conditions ([aa7af83](https://github.com/spautz/skip-the-build/commit/aa7af83eb9c5b06641b8921e7b97c47191676c07))
+
 ## 0.3.1
 
 ### Patch Changes
