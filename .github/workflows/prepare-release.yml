@@ -10,6 +10,11 @@ permissions:
   contents: write
   pull-requests: write
 
+env:
+  # pnpm doesn't like the package & branch changes that happen when preparing a release,
+  # and `verifyDepsBeforeRun` causes failures. So we'll disable the hooks that activate pnpm.
+  HUSKY: 0
+
 jobs:
   prepare-release-pr:
     name: Prepare PR for release
@@ -34,9 +39,6 @@ jobs:
 
       - name: Prepare release
         run: pnpm run release:prep
-
-      - name: Run install to keep ERR_PNPM_VERIFY_DEPS_BEFORE_RUN happy
-        run: pnpm install
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6.3.0
