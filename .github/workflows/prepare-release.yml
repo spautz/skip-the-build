@@ -35,6 +35,9 @@ jobs:
       - name: Prepare release
         run: pnpm run release:prep
 
+      - name: Run install to keep ERR_PNPM_VERIFY_DEPS_BEFORE_RUN happy
+        run: pnpm install
+
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6.3.0
         with:
