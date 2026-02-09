@@ -21,10 +21,11 @@
       "!package-lock.json",
       "!pnpm-lock.yaml",
       "!yarn.lock",
+      "!**/routeTree.gen.ts",
       // Biome's formatter currently erases comments from yaml files
       "!**/*.yaml",
       // Each external-test has its own linting config, following the conventions of its framework
-      "!**/external-tests"
+      "!external-tests"
     ],
     // 2mb
     "maxSize": 2097152

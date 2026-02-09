@@ -16,8 +16,8 @@ interface Props {
 
 const { primary = false, backgroundColor, size = 'medium', label, ...props }: Props = $props();
 
-let mode = $derived(primary ? 'storybook-button--primary' : 'storybook-button--secondary');
-let style = $derived(backgroundColor ? `background-color: ${backgroundColor}` : '');
+const mode = $derived(primary ? 'storybook-button--primary' : 'storybook-button--secondary');
+const style = $derived(backgroundColor ? `background-color: ${backgroundColor}` : '');
 </script>
 
 <button

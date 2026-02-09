@@ -73,7 +73,7 @@
     "build:verifypack": "ls *.tgz | xargs -I {} attw {} --exclude-entrypoints internal-raw-src"
   },
   "dependencies": {
-    "ci-info": "^4.0.0",
+    "ci-info": "^4.4.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

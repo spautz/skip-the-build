@@ -72,7 +72,15 @@
     // Individual/standalone package tasks
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "build/**", "dist/**"],
+      "outputs": [
+        ".next/**",
+        ".output/**",
+        ".svelte-kit/**",
+        ".nuxt/**",
+        "!.next/cache/**",
+        "build/**",
+        "dist/**"
+      ],
       "outputLogs": "new-only"
     },
     "build:watch": {

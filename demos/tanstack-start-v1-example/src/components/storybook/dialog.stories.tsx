@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { Dialog } from './dialog';
 import { Button } from './button';
+import { Dialog } from './dialog';
 
 const meta = {
   title: 'Form/Dialog',
@@ -57,7 +56,9 @@ export const Form: Story = {
     children: (
       <div className="space-y-4 min-w-80">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+          <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-200">
+            Email
+          </label>
           <input
             type="email"
             placeholder="you@example.com"
@@ -65,7 +66,12 @@ export const Form: Story = {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
+          <label
+            htmlFor="password"
+            className="text-sm font-medium text-gray-700 dark:text-gray-200"
+          >
+            Password
+          </label>
           <input
             type="password"
             placeholder="••••••••"

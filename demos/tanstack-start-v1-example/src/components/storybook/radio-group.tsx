@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 export interface RadioOption {
   value: string;
@@ -24,7 +24,9 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
 }) => {
   return (
     <div className={`flex flex-col gap-3 ${className}`}>
-      <label className="text-sm font-medium text-gray-700 dark:text-gray-200">{label}</label>
+      <label htmlFor={name} className="text-sm font-medium text-gray-700 dark:text-gray-200">
+        {label}
+      </label>
       <div className="flex gap-4">
         {options.map((option) => (
           <label key={option.value} className="flex items-center gap-2 cursor-pointer group">
