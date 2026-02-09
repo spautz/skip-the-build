@@ -1,6 +1,6 @@
 {
   "name": "@spautz/slow-package-example",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A package which takes a long time to build, for demoing `skip-the-build`",
   "keywords": [],
   "license": "MIT",

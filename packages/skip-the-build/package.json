@@ -1,6 +1,6 @@
 {
   "name": "skip-the-build",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Speed up local dev by using local libraries without building them",
   "keywords": [],
   "license": "MIT",
