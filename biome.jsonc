@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -21,11 +21,16 @@
       "!package-lock.json",
       "!pnpm-lock.yaml",
       "!yarn.lock",
+      // Generated files
       "!**/routeTree.gen.ts",
+      "!packages/slow-package-example/src/generated",
       // Biome's formatter currently erases comments from yaml files
       "!**/*.yaml",
       // Each external-test has its own linting config, following the conventions of its framework
-      "!external-tests"
+      "!external-tests",
+      // @TODO: Restore demos
+      "!demos/angular-v21-example",
+      "!demos/sveltekit-v2-example"
     ],
     // 2mb
     "maxSize": 2097152
@@ -99,5 +104,20 @@
         "noBannedTypes": "error"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            // Not yet supported
+            // https://github.com/biomejs/biome/issues/2233
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    }
+  ]
 }

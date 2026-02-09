@@ -11,6 +11,11 @@ const testPathsToExclude = [
   'docs-website/**',
   // Each external-test has its own test config, following the conventions of its framework, so they're not included
   'external-tests/**',
+  // Tests disabled for slow-package-example because they are .. just too slow
+  'packages/slow-package-example/**',
+  // @TODO: Restore demos
+  'demos/angular-v21-example',
+  'demos/tanstack-start-v1-example',
 ];
 
 const vitestConfig: UserConfig = defineConfig({

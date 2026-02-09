@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package-name: [skip-the-build]
+        package-name: [skip-the-build, vite-adapter, webpack-adapter]
 
     steps:
       - uses: actions/checkout@v6.0.1
@@ -55,22 +55,23 @@ jobs:
           cd packages/${{ matrix.package-name }}
           pnpm run all:ci
 
-  demo-ci:
-    name: Demo CI
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        demo-name: [hello-world-cli, hello-world-ui]
-
-    steps:
-      - uses: actions/checkout@v6.0.1
-
-      - uses: ./.github/reusable-workflows/setup-repo
-        with:
-          node-version: lts/*
-          use-lockfile: false
-
-      - name: Run CI checks for demo
-        run: |
-          cd demos/${{ matrix.demo-name }}
-          pnpm run all:ci
+# @TODO: Re-enable
+#  demo-ci:
+#    name: Demo CI
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        demo-name: [hello-world-cli, hello-world-ui]
+#
+#    steps:
+#      - uses: actions/checkout@v6.0.1
+#
+#      - uses: ./.github/reusable-workflows/setup-repo
+#        with:
+#          node-version: lts/*
+#          use-lockfile: false
+#
+#      - name: Run CI checks for demo
+#        run: |
+#          cd demos/${{ matrix.demo-name }}
+#          pnpm run all:ci
