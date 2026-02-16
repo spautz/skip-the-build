@@ -1,8 +1,7 @@
 # General settings
 blockExoticSubdeps: true
 engineStrict: true
-# Temporarily disabled for newly-set-up demos
-#minimumReleaseAge: 7200 # 5 days
+minimumReleaseAge: 7200 # 5 days
 packageManagerStrictVersion: true
 strictDepBuilds: true
 trustPolicy: no-downgrade
@@ -71,10 +70,10 @@ catalogs:
     react: ^18.2.0
     react-dom: ^18.2.0
   react19:
-    '@types/react': ^19.2.0
-    '@types/react-dom': ^19.2.0
-    react: ^19.2.1
-    react-dom: ^19.2.1
+    '@types/react': ^19.2.14
+    '@types/react-dom': ^19.2.3
+    react: ^19.2.4
+    react-dom: ^19.2.4
   typescriptLTS:
     # https://github.com/DefinitelyTyped/DefinitelyTyped#support-window
     typescript: 5.4.x

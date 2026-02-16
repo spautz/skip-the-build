@@ -1,19 +1,47 @@
 {
-  "name": "tanstack-start-v1-example",
+  "name": "@spautz/skip-the-build--tanstack-start-v1-example",
   "private": true,
+  "description": "Vite demo of skip-the-build",
+  "license": "MIT",
+  "homepage": "https://github.com/spautz/skip-the-build/blob/main/demos/tanstack-start-v1-example#readme",
+  "bugs": "https://github.com/spautz/skip-the-build/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spautz/skip-the-build.git",
+    "directory": "demos/tanstack-start-v1-example"
+  },
+  "author": {
+    "name": "Steven Pautz",
+    "url": "https://stevenpautz.com"
+  },
+  "source": "./src/main.tsx",
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 3000",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "echo '@TODO: vitest run'",
-    "format": "biome format",
-    "lint": "biome lint",
-    "check": "biome check",
+    "____ STANDARD PACKAGE TASKS ________________________________________": "",
+    "all": "turbo run pipeline-all",
+    "all:ci": "turbo run pipeline-ci --ui=stream",
+    "build": "pnpm run build:clean && pnpm run build:main",
+    "clean": "pnpm run build:clean && pnpm run test:clean && rimraf --glob ./node_modules/.cache ./.turbo ./*.log",
+    "dev": "vite",
+    "lint": "biome check --write .",
+    "lint:verify": "biome check .",
+    "start": "vite preview",
+    "test:clean": "rimraf ./coverage",
+    "test_SKIPPED": "pnpm run test:clean       && vitest run --coverage",
+    "test:ci_SKIPPED": "pnpm run test:clean    && vitest run --coverage --bail 1",
+    "test:ui_SKIPPED": "pnpm run test:clean    && vitest --ui",
+    "test:watch_SKIPPED": "pnpm run test:clean && vitest watch --coverage",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit",
+    "____ BUILD & DEPLOY TASKS __________________________________________": "",
+    "build:clean": "rimraf ./dist",
+    "build:main": "vite build",
+    "build:watch": "pnpm run build:clean && vite build --watch",
+    "size-check": "source-map-explorer dist/**/*.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@spautz/slow-package-example": "workspace:",
     "@storybook/react-vite": "^10.1.10",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "^0.9.5",
@@ -31,6 +59,7 @@
     "vite-tsconfig-paths": "^6.0.2"
   },
   "devDependencies": {
+    "@skip-the-build/vite": "workspace:",
     "@tanstack/devtools-vite": "^0.5.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "catalog:",

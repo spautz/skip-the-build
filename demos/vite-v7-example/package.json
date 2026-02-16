@@ -39,9 +39,9 @@
     "size-check": "source-map-explorer dist/**/*.js"
   },
   "dependencies": {
+    "@spautz/slow-package-example": "workspace:",
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "@spautz/slow-package-example": "workspace:"
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@skip-the-build/vite": "workspace:",

@@ -1,3 +1,4 @@
+import { helloWorld } from '@spautz/slow-package-example';
 import { Link } from '@tanstack/react-router';
 import {
   BookOpen,
@@ -11,8 +12,9 @@ import {
   X,
 } from 'lucide-react';
 import { useState } from 'react';
+import type { JSX } from 'react/jsx-runtime';
 
-export default function Header() {
+function Header(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [groupedExpanded, setGroupedExpanded] = useState<Record<string, boolean>>({});
 
@@ -112,18 +114,18 @@ export default function Header() {
               onClick={() =>
                 setGroupedExpanded((prev) => ({
                   ...prev,
-                  StartSSRDemo: !prev.StartSSRDemo,
+                  StartSSRDemo: !prev['StartSSRDemo'],
                 }))
               }
             >
-              {groupedExpanded.StartSSRDemo ? (
+              {groupedExpanded['StartSSRDemo'] ? (
                 <ChevronDown size={20} />
               ) : (
                 <ChevronRight size={20} />
               )}
             </button>
           </div>
-          {groupedExpanded.StartSSRDemo && (
+          {groupedExpanded['StartSSRDemo'] && (
             <div className="flex flex-col ml-4">
               <Link
                 to="/demo/start/ssr/spa-mode"
@@ -182,6 +184,10 @@ export default function Header() {
           {/* Demo Links End */}
         </nav>
       </aside>
+
+      <p>From the slow-package-example package: {helloWorld}</p>
     </>
   );
 }
+
+export { Header };

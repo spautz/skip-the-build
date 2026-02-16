@@ -30,6 +30,23 @@ describe('@skip-the-build/vite', () => {
         resolve: {
           conditions: ['my-condition'],
         },
+        ssr: {
+          resolve: {
+            conditions: ['my-condition'],
+          },
+        },
+        environments: {
+          client: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+          },
+          ssr: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+          },
+        },
       });
     });
 
@@ -43,11 +60,7 @@ describe('@skip-the-build/vite', () => {
 
       const result: UserConfig = await getViteConfig(skipTheBuildConfig);
 
-      expect(result).toEqual({
-        resolve: {
-          conditions: [],
-        },
-      });
+      expect(result).toEqual({});
     });
   });
 
@@ -75,6 +88,23 @@ describe('@skip-the-build/vite', () => {
           resolve: {
             conditions: ['my-condition'],
           },
+          ssr: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+          },
+          environments: {
+            client: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
+            ssr: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
+          },
         },
         baseConfig,
       );
@@ -88,6 +118,23 @@ describe('@skip-the-build/vite', () => {
         },
         resolve: {
           conditions: ['my-condition'],
+        },
+        ssr: {
+          resolve: {
+            conditions: ['my-condition'],
+          },
+        },
+        environments: {
+          client: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+          },
+          ssr: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+          },
         },
       });
     });
@@ -108,6 +155,13 @@ describe('@skip-the-build/vite', () => {
         resolve: {
           conditions: ['existing-condition-in-config'],
         },
+        environments: {
+          ssr: {
+            resolve: {
+              conditions: ['existing-ssr-condition-in-config'],
+            },
+          },
+        },
       };
 
       const result = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
@@ -117,6 +171,23 @@ describe('@skip-the-build/vite', () => {
         {
           resolve: {
             conditions: ['my-condition'],
+          },
+          ssr: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+          },
+          environments: {
+            client: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
+            ssr: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
           },
         },
         baseConfig,
@@ -131,6 +202,23 @@ describe('@skip-the-build/vite', () => {
         },
         resolve: {
           conditions: ['my-condition', 'existing-condition-in-config'],
+        },
+        ssr: {
+          resolve: {
+            conditions: ['my-condition'],
+          },
+        },
+        environments: {
+          client: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+          },
+          ssr: {
+            resolve: {
+              conditions: ['my-condition', 'existing-ssr-condition-in-config'],
+            },
+          },
         },
       });
     });
