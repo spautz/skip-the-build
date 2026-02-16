@@ -1,13 +1,20 @@
+import { withSkipTheBuild } from '@skip-the-build/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [['babel-plugin-react-compiler']],
-      },
-    }),
-  ],
-});
+import skipTheBuildSettings from '../../skip-the-build.ts';
+
+const viteConfig: Promise<UserConfig> = withSkipTheBuild(
+  skipTheBuildSettings,
+  defineConfig({
+    plugins: [
+      react({
+        babel: {
+          plugins: [['babel-plugin-react-compiler']],
+        },
+      }),
+    ],
+  }),
+);
+
+export default viteConfig;

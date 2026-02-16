@@ -61,6 +61,9 @@ import { defineConfig, presets } from 'skip-the-build';
 
 export default defineConfig({
   extend: presets.default,
+  settings: {
+    exportConditionName: 'local-dev',
+  },
 });
 ```
 

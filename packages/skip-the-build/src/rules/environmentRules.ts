@@ -9,22 +9,22 @@ const internal_getEnvVar = (name: string): string | undefined => {
 /**
  * The ENV variable has been set (even if just to an empty value)
  */
-const envVarExists = (name: string) => {
+const envVarExists = (name: string): boolean => {
   return internal_getEnvVar(name) !== undefined;
 };
 
 /**
  * The ENV variable has been set, and it's something other than "", "false", or "0"
  */
-const envVarIsEnabled = (name: string) => {
+const envVarIsEnabled = (name: string): boolean => {
   const envValue = internal_getEnvVar(name);
-  return envValue && !EMPTY_ENV_VALUES.includes(envValue);
+  return !!envValue && !EMPTY_ENV_VALUES.includes(envValue);
 };
 
 /**
  * The ENV variable has either not been set, or it's been set to "", "false", or "0"
  */
-const envVarIsDisabled = (name: string) => {
+const envVarIsDisabled = (name: string): boolean => {
   return !envVarIsEnabled(name);
 };
 
@@ -34,7 +34,7 @@ const envVarIsDisabled = (name: string) => {
 const envVarHasValue = (
   name: string,
   requiredValue: string | undefined | Array<string | undefined>,
-) => {
+): boolean => {
   const envValue = internal_getEnvVar(name);
 
   if (Array.isArray(requiredValue)) {
@@ -43,24 +43,24 @@ const envVarHasValue = (
   return envValue === requiredValue;
 };
 
-const isCI = () => {
+const isCI = (): boolean => {
   return ci.isCI;
 };
-const notCI = () => {
+const notCI = (): boolean => {
   return !ci.isCI;
 };
 
-const isProductionMode = () => {
+const isProductionMode = (): boolean => {
   return envVarHasValue('NODE_ENV', 'production');
 };
-const isDevelopmentMode = () => {
+const isDevelopmentMode = (): boolean => {
   return !isProductionMode();
 };
 
-const isPullRequest = () => {
+const isPullRequest = (): boolean | null => {
   return ci.isPR;
 };
-const notPullRequest = () => {
+const notPullRequest = (): boolean => {
   return !ci.isPR;
 };
 

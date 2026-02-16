@@ -10,7 +10,7 @@ const devModeOnlyPreset = {
 };
 
 const envVarOnlyPreset = {
-  neverSkipWhen: [envVarIsEnabled('SKIP_THE_BUILD')],
+  skipWhen: [envVarIsEnabled('SKIP_THE_BUILD')],
 };
 
 const presets = {

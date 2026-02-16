@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import viteLogo from '/vite.svg';
+import { helloWorld } from '@spautz/slow-package-example';
+import { type JSX, useState } from 'react';
 import reactLogo from './assets/react.svg';
+import viteLogo from './assets/vite.svg';
 import './App.css';
 
-function App() {
+function App(): JSX.Element {
   const [count, setCount] = useState(0);
 
   return (
@@ -25,9 +26,9 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <p>From the slow-package-example package: {helloWorld}</p>
     </>
   );
 }
 
-export default App;
+export { App };
