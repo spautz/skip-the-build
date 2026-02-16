@@ -29,8 +29,7 @@
       // Each external-test has its own linting config, following the conventions of its framework
       "!external-tests",
       // @TODO: Restore demos
-      "!demos/angular-v21-example",
-      "!demos/sveltekit-v2-example"
+      "!demos/angular-v21-example"
     ],
     // 2mb
     "maxSize": 2097152
@@ -44,6 +43,10 @@
     "parser": {
       "tailwindDirectives": true
     }
+  },
+  "html": {
+    // For processing astro/svelte/etc. As of 2.3.14 / February 2026 this isn't ready.
+    // "experimentalFullSupportEnabled": true
   },
   "javascript": {
     "formatter": {
@@ -60,17 +63,20 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "complexity": {
+        "noForEach": "warn",
+        "noStaticOnlyClass": "error",
+        "noBannedTypes": "error",
+        "useLiteralKeys": "off"
+      },
       "correctness": {
         "noUnusedVariables": "error",
         "useHookAtTopLevel": "error",
         "noUndeclaredVariables": "error",
         "noUnusedImports": "error"
       },
-      "suspicious": {
-        "noExplicitAny": "error",
-        "noConsole": "warn",
-        "noEmptyInterface": "error",
-        "noRedundantUseStrict": "error"
+      "performance": {
+        "noDelete": "warn"
       },
       "style": {
         "noInferrableTypes": "error",
@@ -89,25 +95,17 @@
         "useImportType": "error",
         "useExportType": "error"
       },
-      // "nursery": {
-      //   "useImportType": "error",
-      //   "useExportType": "error",
-      //   "noUnusedImports": "error",
-      //   "noNodejsModules": "error"
-      // },
-      "performance": {
-        "noDelete": "warn"
-      },
-      "complexity": {
-        "noForEach": "warn",
-        "noStaticOnlyClass": "error",
-        "noBannedTypes": "error"
+      "suspicious": {
+        "noExplicitAny": "error",
+        "noConsole": "warn",
+        "noEmptyInterface": "error",
+        "noRedundantUseStrict": "error"
       }
     }
   },
   "overrides": [
     {
-      "includes": ["**/*.astro"],
+      "includes": ["**/*.astro", "**/*.svelte"],
       "linter": {
         "rules": {
           "correctness": {

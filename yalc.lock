@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "skip-the-build": {
+      "signature": "927ea26ef0d8fdbac714d2fcca2f8972",
+      "file": true,
+      "replaced": "next"
+    }
+  }
+}

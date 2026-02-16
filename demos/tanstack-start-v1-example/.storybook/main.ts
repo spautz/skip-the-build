@@ -7,6 +7,9 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
+  core: {
+    disableTelemetry: true,
+  },
   async viteFinal(config) {
     const { default: tailwindcss } = await import('@tailwindcss/vite');
     config.plugins = config.plugins || [];

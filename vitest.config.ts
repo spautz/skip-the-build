@@ -15,7 +15,6 @@ const testPathsToExclude = [
   'packages/slow-package-example/**',
   // @TODO: Restore demos
   'demos/angular-v21-example',
-  'demos/tanstack-start-v1-example',
 ];
 
 const vitestConfig: UserConfig = defineConfig({

@@ -10,7 +10,7 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 import skipTheBuildSettings from '../../skip-the-build.ts';
 
-const viteConfig: Promise<UserConfig> = withSkipTheBuild(
+const viteConfig: UserConfig = await withSkipTheBuild(
   skipTheBuildSettings,
   // This is the default config from Tanstack-Start
   defineConfig({

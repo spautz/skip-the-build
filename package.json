@@ -58,6 +58,7 @@
     "w:lint": "biome check --write",
     "w:lint:verify": "biome check",
     "w:typecheck": "tsc -p ./tsconfig.json --noEmit",
+    "yalc:update": "pnpm run --filter skip-the-build publish:yalc && yalc add skip-the-build",
     "____ PACKAGE-ONLY TASKS ____________________________________________": "",
     "packages:all": "turbo run pipeline-all",
     "packages:all:ci": "turbo run pipeline-ci --ui=stream",

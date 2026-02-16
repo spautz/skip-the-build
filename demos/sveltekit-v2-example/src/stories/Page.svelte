@@ -2,7 +2,8 @@
 import './page.css';
 import Header from './Header.svelte';
 
-const user = $state<{ name: string }>();
+// biome-ignore lint/style/useConst: This is reassigned below: Biome is confused about thinking it needs to be const
+let user = $state<{ name: string }>();
 </script>
 
 <article>

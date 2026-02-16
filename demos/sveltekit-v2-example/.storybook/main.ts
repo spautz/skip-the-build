@@ -1,8 +1,6 @@
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/sveltekit';
-
-import { dirname } from 'path';
-
-import { fileURLToPath } from 'url';
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -12,12 +10,15 @@ function getAbsolutePath(value: string) {
   return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
 }
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|ts|svelte)'],
-  addons: [
-    getAbsolutePath('@storybook/addon-svelte-csf'),
-    getAbsolutePath('@storybook/addon-a11y'),
-    getAbsolutePath('@storybook/addon-docs'),
-  ],
-  framework: getAbsolutePath('@storybook/sveltekit'),
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|ts)'],
+  addons: [getAbsolutePath('@storybook/addon-a11y'), getAbsolutePath('@storybook/addon-docs')],
+  framework: {
+    name: '@storybook/sveltekit',
+    options: {},
+  },
+
+  core: {
+    disableTelemetry: true,
+  },
 };
 export default config;
