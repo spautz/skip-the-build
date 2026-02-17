@@ -1,15 +1,15 @@
 {
-  "name": "skip-the-build",
-  "version": "0.1.0+4852ef7a",
-  "description": "Speed up local dev by using local libraries without building them",
+  "name": "@skip-the-build/astro",
+  "version": "1.0.0",
+  "description": "Astro adapter for skip-the-build",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/skip-the-build#readme",
+  "homepage": "https://github.com/spautz/skip-the-build/blob/main/packages/astro-adapter#readme",
   "bugs": "https://github.com/spautz/skip-the-build/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spautz/skip-the-build.git",
-    "directory": "packages/skip-the-build"
+    "directory": "packages/astro-adapter"
   },
   "author": {
     "name": "Steven Pautz",
@@ -73,9 +73,17 @@
     "build:verifypack": "ls *.tgz | xargs -I {} attw {} --exclude-entrypoints internal-raw-src"
   },
   "dependencies": {
-    "ci-info": "^4.4.0",
-    "zod": "^4.3.6"
+    "@skip-the-build/vite": "workspace:^"
   },
-  "peerDependencies": {},
-  "yalcSig": "4852ef7a1c8644899596275390f8cfd1"
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "publint": "catalog:",
+    "skip-the-build": "workspace:*",
+    "tsdown": "catalog:",
+    "astro": "5.17.2"
+  },
+  "peerDependencies": {
+    "skip-the-build": "workspace:^",
+    "astro": "^5.0.0"
+  }
 }

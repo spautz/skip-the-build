@@ -77,13 +77,12 @@
     "@arethetypeswrong/cli": "catalog:",
     "publint": "catalog:",
     "skip-the-build": "workspace:*",
-    "source-map-explorer": "catalog:",
     "tsdown": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
   },
   "peerDependencies": {
     "skip-the-build": "workspace:^",
-    "vite": "^7.0.0"
+    "vite": "^6.0.0 || ^7.0.0"
   }
 }

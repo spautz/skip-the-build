@@ -1,18 +1,23 @@
+import type { AstroUserConfig } from 'astro';
 import type { SkipTheBuildConfig } from 'skip-the-build';
-import type { UserConfig } from 'vite';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { getViteConfig, withSkipTheBuild } from '../index.ts';
+import { getAstroConfig, withSkipTheBuild } from '../index.ts';
 
+/*
+ * Vite fails when imported in Vitest, due to an ESBuild environment check, so we mock it through Astro.
+ * End-to-end behavior is validated by the demo-apps and external-tests.
+ */
+vi.mock('astro/config');
 vi.mock('vite');
 
 beforeEach(() => {
   vi.clearAllMocks();
 });
 
-describe('@skip-the-build/vite', () => {
-  describe('getViteConfig()', () => {
-    test('returns overrides UserConfig when skipping', async () => {
+describe('@skip-the-build/astro', () => {
+  describe('getAstroConfig()', () => {
+    test('returns overrides AstroUserConfig when skipping', async () => {
       const skipTheBuildConfig: SkipTheBuildConfig = {
         skipWhen: [true],
         settings: {
@@ -20,33 +25,35 @@ describe('@skip-the-build/vite', () => {
         },
       };
 
-      const result: UserConfig = await getViteConfig(skipTheBuildConfig);
+      const result: AstroUserConfig = await getAstroConfig(skipTheBuildConfig);
 
       expect(result).toEqual({
-        resolve: {
-          conditions: ['my-condition'],
-        },
-        ssr: {
+        vite: {
           resolve: {
             conditions: ['my-condition'],
-          },
-        },
-        environments: {
-          client: {
-            resolve: {
-              conditions: ['my-condition'],
-            },
           },
           ssr: {
             resolve: {
               conditions: ['my-condition'],
             },
           },
+          environments: {
+            client: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
+            ssr: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
+          },
         },
       });
     });
 
-    test('returns overrides UserConfig when not-skipping', async () => {
+    test('returns overrides AstroUserConfig when not-skipping', async () => {
       const skipTheBuildConfig: SkipTheBuildConfig = {
         skipWhen: [false],
         settings: {
@@ -54,7 +61,7 @@ describe('@skip-the-build/vite', () => {
         },
       };
 
-      const result: UserConfig = await getViteConfig(skipTheBuildConfig);
+      const result: AstroUserConfig = await getAstroConfig(skipTheBuildConfig);
 
       expect(result).toEqual({});
     });
@@ -62,7 +69,7 @@ describe('@skip-the-build/vite', () => {
 
   describe('withSkipTheBuild()', () => {
     test('Merges configs with `mergeConfig`', async () => {
-      const { mergeConfig: mergeConfigMock } = await import('vite');
+      const { mergeConfig: mergeConfigMock } = await import('astro/config');
 
       const skipTheBuildConfig: SkipTheBuildConfig = {
         skipWhen: [true],
@@ -70,9 +77,12 @@ describe('@skip-the-build/vite', () => {
           exportConditionName: ['my-condition'],
         },
       };
-      const baseConfig: UserConfig = {
-        build: {
-          sourcemap: true,
+      const baseConfig: AstroUserConfig = {
+        site: 'https://example.com/',
+        vite: {
+          build: {
+            sourcemap: true,
+          },
         },
       };
 
@@ -81,6 +91,41 @@ describe('@skip-the-build/vite', () => {
       expect(mergeConfigMock).toHaveBeenCalledOnce();
       expect(mergeConfigMock).toHaveBeenCalledWith(
         {
+          vite: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+            ssr: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
+            environments: {
+              client: {
+                resolve: {
+                  conditions: ['my-condition'],
+                },
+              },
+              ssr: {
+                resolve: {
+                  conditions: ['my-condition'],
+                },
+              },
+            },
+          },
+        },
+        baseConfig,
+      );
+      // These check should always pass (since `mergeConfig` is mocked), but it's an extra
+      // safety net just in case
+      expect(result).not.toBe(skipTheBuildConfig);
+      expect(result).not.toBe(baseConfig);
+      expect(result).toEqual({
+        site: 'https://example.com/',
+        vite: {
+          build: {
+            sourcemap: true,
+          },
           resolve: {
             conditions: ['my-condition'],
           },
@@ -99,36 +144,6 @@ describe('@skip-the-build/vite', () => {
               resolve: {
                 conditions: ['my-condition'],
               },
-            },
-          },
-        },
-        baseConfig,
-      );
-      // These check should always pass (since `mergeConfig` is mocked), but it's an extra
-      // safety net just in case
-      expect(result).not.toBe(skipTheBuildConfig);
-      expect(result).not.toBe(baseConfig);
-      expect(result).toEqual({
-        build: {
-          sourcemap: true,
-        },
-        resolve: {
-          conditions: ['my-condition'],
-        },
-        ssr: {
-          resolve: {
-            conditions: ['my-condition'],
-          },
-        },
-        environments: {
-          client: {
-            resolve: {
-              conditions: ['my-condition'],
-            },
-          },
-          ssr: {
-            resolve: {
-              conditions: ['my-condition'],
             },
           },
         },
@@ -136,7 +151,7 @@ describe('@skip-the-build/vite', () => {
     });
 
     test('Merges configs with `mergeConfig`, when baseConfig already has conditions', async () => {
-      const { mergeConfig: mergeConfigMock } = await import('vite');
+      const { mergeConfig: mergeConfigMock } = await import('astro/config');
 
       const skipTheBuildConfig: SkipTheBuildConfig = {
         skipWhen: [true],
@@ -144,17 +159,20 @@ describe('@skip-the-build/vite', () => {
           exportConditionName: ['my-condition'],
         },
       };
-      const baseConfig: UserConfig = {
-        build: {
-          sourcemap: true,
-        },
-        resolve: {
-          conditions: ['existing-condition-in-config'],
-        },
-        environments: {
-          ssr: {
-            resolve: {
-              conditions: ['existing-ssr-condition-in-config'],
+      const baseConfig: AstroUserConfig = {
+        site: 'https://example.com/',
+        vite: {
+          build: {
+            sourcemap: true,
+          },
+          resolve: {
+            conditions: ['existing-condition-in-config'],
+          },
+          environments: {
+            ssr: {
+              resolve: {
+                conditions: ['existing-ssr-condition-in-config'],
+              },
             },
           },
         },
@@ -165,8 +183,43 @@ describe('@skip-the-build/vite', () => {
       expect(mergeConfigMock).toHaveBeenCalledOnce();
       expect(mergeConfigMock).toHaveBeenCalledWith(
         {
+          vite: {
+            resolve: {
+              conditions: ['my-condition'],
+            },
+            ssr: {
+              resolve: {
+                conditions: ['my-condition'],
+              },
+            },
+            environments: {
+              client: {
+                resolve: {
+                  conditions: ['my-condition'],
+                },
+              },
+              ssr: {
+                resolve: {
+                  conditions: ['my-condition'],
+                },
+              },
+            },
+          },
+        },
+        baseConfig,
+      );
+      // These check should always pass (since `mergeConfig` is mocked), but it's an extra
+      // safety net just in case
+      expect(result).not.toBe(skipTheBuildConfig);
+      expect(result).not.toBe(baseConfig);
+      expect(result).toEqual({
+        site: 'https://example.com/',
+        vite: {
+          build: {
+            sourcemap: true,
+          },
           resolve: {
-            conditions: ['my-condition'],
+            conditions: ['my-condition', 'existing-condition-in-config'],
           },
           ssr: {
             resolve: {
@@ -181,38 +234,8 @@ describe('@skip-the-build/vite', () => {
             },
             ssr: {
               resolve: {
-                conditions: ['my-condition'],
+                conditions: ['my-condition', 'existing-ssr-condition-in-config'],
               },
-            },
-          },
-        },
-        baseConfig,
-      );
-      // These check should always pass (since `mergeConfig` is mocked), but it's an extra
-      // safety net just in case
-      expect(result).not.toBe(skipTheBuildConfig);
-      expect(result).not.toBe(baseConfig);
-      expect(result).toEqual({
-        build: {
-          sourcemap: true,
-        },
-        resolve: {
-          conditions: ['my-condition', 'existing-condition-in-config'],
-        },
-        ssr: {
-          resolve: {
-            conditions: ['my-condition'],
-          },
-        },
-        environments: {
-          client: {
-            resolve: {
-              conditions: ['my-condition'],
-            },
-          },
-          ssr: {
-            resolve: {
-              conditions: ['my-condition', 'existing-ssr-condition-in-config'],
             },
           },
         },

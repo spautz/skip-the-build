@@ -13,6 +13,8 @@ const testPathsToExclude = [
   'external-tests/**',
   // Tests disabled for slow-package-example because they are .. just too slow
   'packages/slow-package-example/**',
+  // Svelte tests require processing `.svelte` files: not worth the effort for workspace-level runs
+  'demos/sveltekit-v2-example',
   // @TODO: Restore demos
   'demos/angular-v21-example',
 ];

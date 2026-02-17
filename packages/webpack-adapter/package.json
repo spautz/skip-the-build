@@ -77,7 +77,6 @@
     "@arethetypeswrong/cli": "catalog:",
     "publint": "catalog:",
     "skip-the-build": "workspace:*",
-    "source-map-explorer": "catalog:",
     "tsdown": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"

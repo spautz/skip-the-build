@@ -81,7 +81,6 @@
     "@size-limit/file": "catalog:",
     "publint": "catalog:",
     "size-limit": "catalog:",
-    "source-map-explorer": "catalog:",
     "tsdown": "catalog:"
   },
   "peerDependencies": {},
