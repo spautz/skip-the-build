@@ -29,8 +29,8 @@ const internal_configSchema = z.strictObject({
   }),
 });
 
-type SkipTheBuildConfig = {
-  extend?: Partial<SkipTheBuildConfig> | Array<Partial<SkipTheBuildConfig>> | undefined;
+type SkipTheBuildConfigObject = {
+  extend?: Partial<SkipTheBuildConfigObject> | Array<Partial<SkipTheBuildConfigObject>> | undefined;
   skipWhen?: Array<Internal_Rule>;
   neverSkipWhen?: Array<Internal_Rule>;
   settings: {
@@ -38,8 +38,20 @@ type SkipTheBuildConfig = {
   };
 };
 
+// @TODO:
+// type SkipTheBuildConfigFn = () => SkipTheBuildConfigObject | Promise<SkipTheBuildConfigObject>;
+// type SkipTheBuildConfigPromise =
+//   | Promise<SkipTheBuildConfigObject>
+//   | Promise<() => SkipTheBuildConfigObject>;
+//
+// type SkipTheBuildConfig =
+//   | SkipTheBuildConfigObject
+//   | SkipTheBuildConfigFn
+//   | SkipTheBuildConfigPromise;
+type SkipTheBuildConfig = SkipTheBuildConfigObject;
+
 // Ensure the schema matches our manual type
-null as unknown as SkipTheBuildConfig satisfies z.infer<typeof internal_configSchema>;
+null as unknown as SkipTheBuildConfigObject satisfies z.infer<typeof internal_configSchema>;
 
 const defineSkipTheBuildConfig = (config: SkipTheBuildConfig): SkipTheBuildConfig => config;
 

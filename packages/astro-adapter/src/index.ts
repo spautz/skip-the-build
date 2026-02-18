@@ -9,27 +9,23 @@ const getAstroConfig = async (skipTheBuildConfig: SkipTheBuildConfig): Promise<A
   if (exportConditions.length) {
     const viteConfig = await getViteConfig(skipTheBuildConfig);
 
-    // Astro just nests the Vite config under its own key. We'll just pass everything through.
+    // Astro nests the Vite config under its own key. We'll just pass everything through.
     return {
       vite: viteConfig as unknown,
     } as AstroUserConfig;
   }
+
   // Nothing to do. (It's somewhat cleaner to use an empty object when logging/debugging,
-  // instead of having a bunch of nested empty arrays)
+  // instead of returning a config with a bunch of nested empty arrays)
   return {};
 };
 
-type AstroUserConfigFn = () => Promise<AstroUserConfig>;
-
-const withSkipTheBuild = (
+const withSkipTheBuild = async <T extends AstroUserConfig>(
   skipTheBuildConfig: SkipTheBuildConfig,
-  baseAstroConfig: AstroUserConfig,
-): AstroUserConfigFn => {
-  const asyncAstroConfigFn = async () => {
-    const skipTheBuildAstroConfig = await getAstroConfig(skipTheBuildConfig);
-    return mergeConfig(skipTheBuildAstroConfig, baseAstroConfig);
-  };
-  return asyncAstroConfigFn;
+  baseAstroConfig: T,
+): Promise<T> => {
+  const skipTheBuildAstroConfig = await getAstroConfig(skipTheBuildConfig);
+  return mergeConfig(skipTheBuildAstroConfig, baseAstroConfig) as T;
 };
 
 export { getExportConditions, getAstroConfig, withSkipTheBuild };

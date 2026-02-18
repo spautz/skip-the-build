@@ -86,8 +86,7 @@ describe('@skip-the-build/astro', () => {
         },
       };
 
-      const configFn = withSkipTheBuild(skipTheBuildConfig, baseConfig);
-      const result = await configFn();
+      const result = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
 
       expect(mergeConfigMock).toHaveBeenCalledOnce();
       expect(mergeConfigMock).toHaveBeenCalledWith(
@@ -179,8 +178,7 @@ describe('@skip-the-build/astro', () => {
         },
       };
 
-      const configFn = withSkipTheBuild(skipTheBuildConfig, baseConfig);
-      const result = await configFn();
+      const result = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
 
       expect(mergeConfigMock).toHaveBeenCalledOnce();
       expect(mergeConfigMock).toHaveBeenCalledWith(
