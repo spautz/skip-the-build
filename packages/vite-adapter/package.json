@@ -1,6 +1,6 @@
 {
   "name": "@skip-the-build/vite",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Vite adapter for skip-the-build",
   "keywords": [],
   "license": "MIT",
