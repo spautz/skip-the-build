@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- Handle _ALL_ possible config formats: values, promises, functions, and combinations like functions-returning-promises and promises-returning-functions ([c7d93d4](https://github.com/spautz/skip-the-build/commit/c7d93d440573f4a8330fa8f99d98aac038108b30))
+- Handle all possible config formats: values, promises, functions, and combinations like functions-returning-promises and promises-returning-functions ([c7d93d4](https://github.com/spautz/skip-the-build/commit/c7d93d440573f4a8330fa8f99d98aac038108b30))
 
 ### Patch Changes
 
