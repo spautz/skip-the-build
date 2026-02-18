@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- Handle all possible config formats: values, promises, functions, and combinations like functions-returning-promises and promises-returning-functions ([c7d93d4](https://github.com/spautz/skip-the-build/commit/c7d93d440573f4a8330fa8f99d98aac038108b30))
+
+### Patch Changes
+
+- Fix backwards condition for the `envVarOnly` preset ([61ff754](https://github.com/spautz/skip-the-build/commit/61ff75424e310d400e0993956245f635fa9ae2a0))
+
 ## 0.1.0
 
 ### Minor Changes
