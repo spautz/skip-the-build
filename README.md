@@ -2,8 +2,8 @@
 
 Speed up local dev by using libraries without building them.
 
-This utility lets you directly consume packages during local development -- boosting speed by 1-2
-orders of magnitude in a large workspace -- without sacrificing quality checks.
+This utility lets you directly consume packages during local development -- reducing build and
+live-reload times significantly -- without sacrificing quality checks.
 
 [![npm version](https://img.shields.io/npm/v/skip-the-build.svg)](https://www.npmjs.com/package/skip-the-build)
 [![readme](https://img.shields.io/badge/-readme-informational)](https://github.com/spautz/skip-the-build/blob/main/packages/skip-the-build/README.md)
@@ -15,37 +15,36 @@ orders of magnitude in a large workspace -- without sacrificing quality checks.
 
 Library maintainers working in a package workspace.
 
-Published packages must be vanilla Javascript. Transpiling those packages takes time, especially
-when there's a long chain of dependencies.
+## Problem
 
-Direct consumption -- consuming a local package as untranspiled Typescript -- is much faster for
-local development, but is inherently dangerous: any import mistakes or issues with the build system
-will go undetected.
+For an in-workspace dependency, you normally have to choose between:
 
-Normally you have to choose between speed and "correctness" (building), and correctness wins.
+* A) "Correct": the library is built before it's used, to become a normal, well-formed npm package --
+     just resolved through the workspace instead of a registry.
+* B) "Fast": the library's source files are processed directly by their consumers, without a separate build
+     step -- and without being a well-formed npm packages.
 
-> `skip-the-build` is a set of utilities to **conditionally** consume local packages directly.
->
-> Run the full, formal build steps in CI; don't wait for them locally.
+`skip-the-build` makes it easy to _switch back and forth_ between the two: "fast" for local dev,
+"correct" for CI.
 
-This used to require external scripts, brittle export paths, and a lot of care.
-`skip-the-build` does it through your build system using [condition names](https://nodejs.org/docs/latest/api/packages.html#conditional-exports)
-and NodeJS's standard resolution rules.
+More information: [Workspace Modes](http://spautz.github.io/skip-the-build/workspace-modes/)
+and [How It Works](http://spautz.github.io/skip-the-build/how-it-works/)
 
 ## Usage
 
 ### 1. Create a `skip-the-build.ts`
 
-This can live anywhere: your workspace root, within a local package, or the location of your choice.
+This can live anywhere: your workspace root, a local package, or the location of your choice.
 
 ```javascript
-import { defineConfig, isLocalDev, isGitBranch } from 'skip-the-build';
+import { defineConfig, isCI, hasInteractiveTTY, isGitBranch } from 'skip-the-build';
 
 export default defineConfig({
   skipWhen: [
-    isLocalDev,
+    hasInteractiveTTY(),
   ],
   neverSkipWhen: [
+    isCI(),
     isGitBranch('main'),
   ],
   settings: {
@@ -54,7 +53,7 @@ export default defineConfig({
 });
 ```
 
-Or use a preset. Multiple presets are allowed if you wish.
+Or use a preset:
 
 ```javascript
 import { defineConfig, presets } from 'skip-the-build';
@@ -67,35 +66,51 @@ export default defineConfig({
 });
 ```
 
+Full docs:
+* [Config file](http://spautz.github.io/skip-the-build/core/config/)
+* [All Rules](http://spautz.github.io/skip-the-build/core/rules/)
+* [Presets](http://spautz.github.io/skip-the-build/core/presets/)
+
+
 ### 2. Expose the direct export in your packages
 
-For the `exportConditionName: 'local-dev'` above, add the `"local-dev"` condition to your package,
-as the first entry under the entry point:
+To match the `exportConditionName: "local-dev"` above, add the `"local-dev"` condition to your package,
+as the first item under each entry:
 
 ```json lines
   "exports": {
     ".": {
-      "local-dev": "./src/index.ts", <-- add this
+      "local-dev": "./src/index.ts",  <-- add this
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "require": {
         // ...
-      }
+      },
 ```
 
-If `"local-dev"` is omitted, nothing bad will happen. It just won't speed things up.
+If `"local-dev"` is omitted, nothing bad will happen: you'll just have to run the build to generate
+the package's `.js` and `.d.ts` files each time the source changes.
 
-### 3. Add it to your build config[s]
+
+Full docs:
+* [Config file](http://spautz.github.io/skip-the-build/core/config/)
+* [All Rules](http://spautz.github.io/skip-the-build/core/rules/)
+* [Presets](http://spautz.github.io/skip-the-build/core/presets/)
+
+### 3. Add it to your build configs
+
+Add `withSkipTheBuild()` to your package's consumers' build configs.
 
 ```javascript
-// vite.configSchema.ts
-import { maybeSkipTheBuild } from '@skip-the-build/vite'
+// vite.config.ts
+import { defineConfig } from 'vite';
+import { withSkipTheBuild } from '@skip-the-build/vite';
 import skipTheBuildConfig from 'your/local/skip-the-build.ts';
 
 const viteConfig = defineConfig(
-  await maybeSkipTheBuild(skipTheBuildConfig, {
+  withSkipTheBuild(skipTheBuildConfig, {
     // rest of your Vite config
     // ...
   }
@@ -105,135 +120,82 @@ const viteConfig = defineConfig(
 Or do it manually if you prefer:
 
 ```javascript
-// vite.configSchema.ts
-import { getViteConfig } from '@skip-the-build/vite'
+// vite.config.ts
+import { defineConfig, mergeConfig } from 'vite';
+import { getViteConfig } from '@skip-the-build/vite';
 import skipTheBuildConfig from 'your/local/skip-the-build.ts';
 
 const skipTheViteBuild = await getViteConfig(skipTheBuildConfig);
 
-const viteConfig: UserConfig = mergeConfig(skipTheViteBuild, {
-  // your Vite config
+const viteConfig: UserConfig = mergeConfig(skipTheViteBuild, defineConfig({
+  // rest of your Vite config
   // ...
 });
 ```
 
-## Dev tools, frameworks, and build systems
+## Available Integrations
 
-| Library/Tool    | Integration                     | Notes                                                                                                                                                                                                                                                                          |
-|:----------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Astro           | Use Vite integration            |                                                                                                                                                                                                                                                                                |
-| ESBuild         | Use Vite integration            |                                                                                                                                                                                                                                                                                |
-| Jest            | Manual                          |                                                                                                                                                                                                                                                                                |
-| Next.js         | Webpack only                    | See Webpack / Turbopack                                                                                                                                                                                                                                                        |
-| React Native    | Not supported                   |                                                                                                                                                                                                                                                                                |
-| React-Scripts   | Manual                          | Possible with Webpack integration if using CRACO, React-App-Rewired, or similar                                                                                                                                                                                                |
-| React-Router v7 | Use Vite integration            |                                                                                                                                                                                                                                                                                |
-| Remix 3         | Use ESBuild integration         |                                                                                                                                                                                                                                                                                |
-| Storybook       | Use Vite or Webpack integration |                                                                                                                                                                                                                                                                                |
-| Tanstack Start  | Use Vite integration            |                                                                                                                                                                                                                                                                                |
-| Turbopack       | Not supported                   | [resolve.conditionNames not supported](https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#missing-webpack-loader-features) ([issue #78912](https://github.com/vercel/next.js/discussions/78912)), and AI called potential workarounds "slightly cursed" |
-| Vite            | `@skip-the-build/vite`          | Also works in other tools that use Vite under the hood                                                                                                                                                                                                                         |
-| Vitest          | Use Vite integration            | Also works in other tools that use Vite under the hood                                                                                                                                                                                                                         |
-| Webpack 5       | `@skip-the-build/webpack`       |                                                                                                                                                                                                                                                                                |
+| Package name                                                                                                   | Use if you have                           | Notes                                                                          |
+|:---------------------------------------------------------------------------------------------------------------|:------------------------------------------|:-------------------------------------------------------------------------------|
+| [`@skip-the-build/angular-with-webpack`](http://spautz.github.io/skip-the-build/angular-with-webpack-adapter/) | `angular.json` + `webpack.config.ts`      | Not yet published. Requires some additional setup.                             |
+| [`@skip-the-build/astro`](http://spautz.github.io/skip-the-build/astro-adapter/)                               | `astro.config.ts`                         |                                                                                |
+| [`@skip-the-build/nextjs-with-webpack`](http://spautz.github.io/skip-the-build/nextjs-with-webpack-adapter/)   | `next.config.ts`                          | Not yet published. Webpack only: Turbobuild does not support export conditions |
+| [`@skip-the-build/nuxt-with-vite`](http://spautz.github.io/skip-the-build/nuxt-with-vite-adapter/)             | `nuxt.config.ts` with a `vite` section    | Not yet published.                                                             |
+| [`@skip-the-build/nuxt-with-webpack`](http://spautz.github.io/skip-the-build/nuxt-with-webpack-adapter/)       | `nuxt.config.ts` with a `webpack` section | Not yet published.                                                             |
+| [`@skip-the-build/rolldown`](http://spautz.github.io/skip-the-build/rolldown-adapter/)                         | `rolldown.config.ts`                      | Not yet published.                                                             |
+| [`@skip-the-build/tsdown`](http://spautz.github.io/skip-the-build/tsdown-adapter/)                             | `tsdown.config.ts`                        | Not yet published.                                                             |
+| [`@skip-the-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                 | `vite.config.ts`                          |                                                                                |
+| [`@skip-the-build/webpack`](http://spautz.github.io/skip-the-build/webpack-adapter/)                           | `webpack.config.ts`                       |                                                                                |
 
-## API Reference
+Each integration package provides two helpers:
+* <code>async get<em>IntegrationName</em>Config(skipTheBiuldConfig)</code> to create a partial config with export conditions
+* <code>async withSkipTheBuild(skipTheBiuldConfig, baseConfig)</code> to automatically merge or apply the export conditions to your config
+ 
+### Frameworks and Build Systems
 
-### Configuration
+This is the same information as the table above.
 
-The `skip-the-build.ts` config has three keys:
+| Framework / Tool | Integration                                                                                                                                                                                                                                                                                   |
+|:-----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Angular          | [`@Skip-The-build/angular-with-webpack`](http://spautz.github.io/skip-the-build/angular-with-webpack/)                                                                                                                                                                                        |
+| Astro            | [`@Skip-The-build/astro`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                               |
+| Cypress          | Not planned, but straightforward: request it or contribute a PR                                                                                                                                                                                                                               |
+| Jest             | Not planned, but straightforward: request it or contribute a PR                                                                                                                                                                                                                               |
+| Next.js          | [`@skip-the-build/nextjs-with-webpack`](http://spautz.github.io/skip-the-build/nextjs-with-webpack-adapter/) if using Webpack. (Turbobuild not supported; see note below)                                                                                                                     |
+| Nuxt             | [`@skip-the-build/nuxt-with-vite`](http://spautz.github.io/skip-the-build/nuxt-with-vite-adapter/) or [`@skip-the-build/nuxt-with-webpack`](http://spautz.github.io/skip-the-build/nuxt-with-webpack-adapter/)                                                                                |
+| Parcel           | Not planned, but straightforward: request it or contribute a PR                                                                                                                                                                                                                               |
+| React Native     | Not supported                                                                                                                                                                                                                                                                                 |
+| React-Scripts    | Not officially supported, but [`@skip-the-build/webpack`](http://spautz.github.io/skip-the-build/webpack-adapter/) will work if using CRACO, React-App-Rewired, or similar                                                                                                                    |
+| React-Router v7  | [`@Skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
+| Remix 3          | Not yet implemented                                                                                                                                                                                                                                                                           |
+| Storybook        | Depends on config. Dedicated helpers not yet implemented.                                                                                                                                                                                                                                     |
+| Tanstack Start   | [`@Skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
+| Turbopack        | Not supported: [resolve.conditionNames not supported](https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#missing-webpack-loader-features) ([issue #78912](https://github.com/vercel/next.js/discussions/78912)), and AI called potential workarounds "slightly cursed" |
+| Vite             | [`@skip-the-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
+| Vitest           | [`@Skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
+| Webpack          | [`@skip-the-build/webpack`](http://spautz.github.io/skip-the-build/webpack-adapter/)                                                                                                                                                                                                          |
 
-#### skipWhen (list of rules)
 
-The conditions when we _may_ skip the build.
+### CLI Integration
 
-This acts like an allowList: so long as any condition has been met, we'll proceed.
-If no rules are specified, we'll always proceed.
+_Not yet implemented_
 
-#### neverSkipWhen (list of rules)
+```shell
+EXPORT_CONDITIONS=$(npx skip-the-build get-conditions)
 
-The conditions when we _will never_ skip the build.
-
-This acts like a denyList: if any condition is met, we will not proceed -- even if a `skipWhen`
-condition was met.
-
-#### settings.enableLogs (info | warn | false)
-
-The amount of internal logs which are emitted when `skip-the-build` runs.
-
-* `info` logs information about rule evaluations, in addition to warnings.
-* `warn` **(default)** logs alerts about unexpected results or non-critical errors.
-* `false` will never log additional information.
-
-Note that errors will always be shown.
-
-#### settings.exportConditionName (condition name or names)
-
-The [NodeJS condition name](https://nodejs.org/docs/latest/api/packages.html#conditional-exports)
-(or names) which will be used to directly consume packages.
-
-Defaults to `"local-dev"`
-
-### Presets
-
-A preset is a full set of rules for a common scenario. All presets use `exportConditionName: 'local-dev'` by default.
-
-```javascript
-import { presets } from 'skip-the-build';
+node --conditions=$EXPORT_CONDITIONS index.js
+bun --conditions=$EXPORT_CONDITIONS index.ts
+deno run --conditions=$EXPORT_CONDITIONS mod.ts
+esbuild src/index.ts --bundle --conditions=$EXPORT_CONDITIONS
 ```
 
-| Preset name   | When it skips              | Notes                                                                        |
-|:--------------|----------------------------|------------------------------------------------------------------------------|
-| `default`     | Running locally            | Fast for local dev, slow/correct for CI                                      |
-| `devModeOnly` | Running dev builds locally | Extra safe: fast for hot reload and local tests, slow/correct for all builds |
-| `envVarOnly`  | `env.SKIP_THE_BUILD=1`     | For testing                                                                  |
+### Usage with Turborepo
 
-### Rules
+Turborepo will still run -- and wait for -- dependency builds for tasks that have `"dependsOn": ["^build"]`.
 
-A rule is a function that checks some condition and returns either `true` only if the condition
-has been met. Rules may be async, and you can add your own custom conditions by simply adding
-your own functions to `skipWhen` or `neverSkipWhen`.
+There are two ways to fix this:
 
-Many rules have overlapping checks (like `isCI`/`notCI`/`isLocalDev`/`notLocalDev`) --
-pick the one which is most readable for your case.
+* A) Gate the build command with `skip-the-build || your-build-command`
+* B) Run build/watch/dev commands directly, without also running dependencies
 
-#### Environment conditions
-
-| Rule                                  | Returns true if:                                                                 |
-|:--------------------------------------|----------------------------------------------------------------------------------|
-| `envVarExists(name)`                  | The env variable has been set at all                                             |
-| `envVarHasValue(name, value\|values)` | The env variable has been set, and it's one of the values provided               |
-| `envVarIsDisabled(name)`              | The env var has either not been set, or it's set to ``, `false`, or `0`          |
-| `envVarIsEnabled(name)`               | The env var has been set, and it's not ``, `false`, or `0`                       |
-| `isCI`                                | [ci-info](https://www.npmjs.com/package/ci-info) detected a CI environment       |
-| `isDevelopmentMode`                   | `NODE_ENV !== "production"`                                                      |
-| `isProductionMode`                    | `NODE_ENV === "production"`                                                      |
-| `isPullRequest`                       | [ci-info](https://www.npmjs.com/package/ci-info) detected a PR                   |
-| `notCI`                               | [ci-info](https://www.npmjs.com/package/ci-info) did not detect a CI environment |
-| `notPullRequest`                      | [ci-info](https://www.npmjs.com/package/ci-info) did not detect a PR             |
-
-#### Repo conditions
-
-| Rule                          | Returns true if:                                            |
-|:------------------------------|-------------------------------------------------------------|
-| `isGitBranch(string\|regex)`  | The current git branch matches the string or pattern        |
-| `notGitBranch(string\|regex)` | The current git branch does not match the string or pattern |
-| `isShallowClone`              | The current git repo is a shallow repository                |
-
-#### General conditions
-
-| Rule            | Returns true if:                                                            |
-|:----------------|-----------------------------------------------------------------------------|
-| `and(...Rules)` | All rules return true                                                       |
-| `not(Rule)`     | The rule provided did not return true                                       |
-| `or(...Rules)`  | Any rule returns true                                                       |
-| `random(%)`     | Math.rand() is smaller than the number given. (% should be between 0 and 1) |
-| Any function    | The function returns true, or a promise that resolves to true               |
-| Any promise     | The promise resolves to true                                                |
-| Any other value | The value is exactly true                                                   |
-
-
-
-<!--
-2.3s when skipped for "Hello World"
-8.7s with all-modern tooling
--->
+See doc: [Usage with Turborepo](http://spautz.github.io/skip-the-build/turborepo/)

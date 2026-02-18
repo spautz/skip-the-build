@@ -18,4 +18,18 @@ function deepMerge<T>(base: T, overrides: T): T {
   return overrides;
 }
 
-export { deepMerge };
+type Awaitable<T> = T | Promise<T>;
+
+async function resolveFnOrPromise<ValueType, ExtraArgsType extends Array<unknown>>(
+  value: Awaitable<ValueType | ((...args: ExtraArgsType) => Awaitable<ValueType>)>,
+  ...extraArgs: ExtraArgsType
+): Promise<ValueType> {
+  const value2 = await value;
+  if (typeof value2 === 'function') {
+    const fn = value2 as (...args: ExtraArgsType) => Awaitable<ValueType>;
+    return await fn(...extraArgs);
+  }
+  return value2;
+}
+
+export { deepMerge, resolveFnOrPromise };

@@ -3,7 +3,7 @@ import {
   internal_configSchema,
   type SkipTheBuildConfig,
 } from './configSchema.ts';
-import { deepMerge } from './utils.ts';
+import { deepMerge, resolveFnOrPromise } from './utils.ts';
 
 // Parsing applies any base configs
 type ParsedConfig = Omit<SkipTheBuildConfig, 'extend'>;
@@ -61,7 +61,7 @@ const internal_evaluateRule = async (rule: Internal_Rule): Promise<boolean> => {
 
 const evaluateConfig = async (rawConfig: SkipTheBuildConfig): Promise<boolean> => {
   if (rawConfig !== lastRawConfig) {
-    const { skipWhen, neverSkipWhen } = internal_parseConfig(rawConfig);
+    const { skipWhen, neverSkipWhen } = internal_parseConfig(await resolveFnOrPromise(rawConfig));
 
     let passed = true;
     if (skipWhen) {

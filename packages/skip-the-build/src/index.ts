@@ -1,8 +1,10 @@
 export * from './configSchema.js';
-export * from './presets/presets.ts';
+export * from './presets/presets.js';
 export * from './processConfig.js';
 
-export * from './rules/allRules.ts';
-export * from './rules/environmentRules.ts';
-export * from './rules/generalRules.ts';
-export * from './rules/gitRules.ts';
+export * from './rules/allRules.js';
+export * from './rules/booleanLogicRules.js';
+export * from './rules/environmentRules.js';
+export * from './rules/gitRules.js';
+
+export * from './utils.js';

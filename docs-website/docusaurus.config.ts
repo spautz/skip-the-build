@@ -3,17 +3,15 @@ import type { Config } from '@docusaurus/types';
 import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
-  title: "spautz's Package-Template Docs",
-  tagline: 'My opinionated template for a npm library repo',
+  title: 'Skip-The-Build Docs',
   favicon: 'img/favicon.ico',
 
   url: 'https://spautz.github.io',
-  baseUrl: '/package-template/',
+  baseUrl: '/skip-the-build/',
 
   // GitHub pages deployment config.
   organizationName: 'spautz',
-  projectName: 'package-template',
-  trailingSlash: false,
+  projectName: 'skip-the-build',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -48,7 +46,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: "spautz's Package-Template Docs\n",
+      title: "spautz's Skip-The-Build Docs\n",
       // logo: {
       //   alt: 'My Site Logo',
       //   src: 'img/logo.svg',
@@ -61,9 +59,9 @@ const config: Config = {
           label: 'Home',
         },
         // { to: '/blog', label: 'Blog', position: 'left' },
-        { to: '/demo', label: 'Demo', position: 'left' },
+        // { to: '/demo', label: 'Demo', position: 'left' },
         {
-          href: 'https://github.com/spautz/package-template',
+          href: 'https://github.com/spautz/skip-the-build',
           label: 'GitHub',
           position: 'right',
         },
@@ -94,7 +92,7 @@ const config: Config = {
       //       },
       //       {
       //         label: 'GitHub',
-      //         href: 'https://github.com/spautz/package-template',
+      //         href: 'https://github.com/spautz/skip-the-build',
       //       },
       //     ],
       //   },

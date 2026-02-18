@@ -76,7 +76,8 @@ describe('@skip-the-build/vite', () => {
         },
       };
 
-      const result = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
+      const configFn = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
+      const result = await configFn({ command: 'build', mode: 'development' });
 
       expect(mergeConfigMock).toHaveBeenCalledOnce();
       expect(mergeConfigMock).toHaveBeenCalledWith(
@@ -160,7 +161,8 @@ describe('@skip-the-build/vite', () => {
         },
       };
 
-      const result = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
+      const configFn = await withSkipTheBuild(skipTheBuildConfig, baseConfig);
+      const result = await configFn({ command: 'build', mode: 'development' });
 
       expect(mergeConfigMock).toHaveBeenCalledOnce();
       expect(mergeConfigMock).toHaveBeenCalledWith(

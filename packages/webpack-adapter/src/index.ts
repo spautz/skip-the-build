@@ -1,15 +1,18 @@
 import { getExportConditions, type SkipTheBuildConfig } from 'skip-the-build';
 import type { Configuration } from 'webpack';
 
+type Awaitable<T> = T | Promise<T>;
+
 type ResolvedWebpackConfig = Configuration | Configuration[];
-type WebpackConfigInput<T extends ResolvedWebpackConfig> = T | Promise<T>;
+type WebpackConfigInput<T extends ResolvedWebpackConfig> = Awaitable<T>;
 type WebpackConfigFunction<T extends ResolvedWebpackConfig> = (
   env: unknown,
   argv: unknown,
-) => WebpackConfigInput<T>;
-type WebpackConfigExport =
-  | WebpackConfigInput<ResolvedWebpackConfig>
-  | WebpackConfigFunction<ResolvedWebpackConfig>;
+) => Awaitable<T>;
+
+type WebpackConfigExport = Awaitable<
+  ResolvedWebpackConfig | WebpackConfigFunction<ResolvedWebpackConfig>
+>;
 
 const createWebpackConfigForImportConditions = (importConditions: string[]): Configuration => ({
   resolve: {
@@ -71,9 +74,19 @@ function withSkipTheBuild(
   }
 
   return (async () => {
-    const resolved = await baseConfig;
+    const awaited = await baseConfig;
+
+    if (typeof awaited === 'function') {
+      const baseFn = awaited;
+      return async (env: unknown, argv: unknown) => {
+        const resolved = await baseFn(env, argv);
+        const exportConditions = await getExportConditions(skipTheBuildConfig);
+        return applyToResolved(resolved, exportConditions);
+      };
+    }
+
     const exportConditions = await getExportConditions(skipTheBuildConfig);
-    return applyToResolved(resolved, exportConditions);
+    return applyToResolved(awaited, exportConditions);
   })();
 }
 

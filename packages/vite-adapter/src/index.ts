@@ -1,5 +1,5 @@
-import { getExportConditions, type SkipTheBuildConfig } from 'skip-the-build';
-import { mergeConfig, type UserConfig } from 'vite';
+import { getExportConditions, resolveFnOrPromise, type SkipTheBuildConfig } from 'skip-the-build';
+import { type ConfigEnv, mergeConfig, type UserConfig, type UserConfigExport } from 'vite';
 
 const getViteConfig = async (skipTheBuildConfig: SkipTheBuildConfig): Promise<UserConfig> => {
   const exportConditions = await getExportConditions(skipTheBuildConfig);
@@ -28,16 +28,25 @@ const getViteConfig = async (skipTheBuildConfig: SkipTheBuildConfig): Promise<Us
     };
   }
   // Nothing to do. (It's somewhat cleaner to use an empty object when logging/debugging,
-  // instead of having a bunch of nested empty arrays)
+  // instead of returning a config with a bunch of nested empty arrays)
   return {};
 };
 
-const withSkipTheBuild = async (
+/**
+ * Returns an async function that returns the merged Vite config.
+ *
+ * Returning a function instead of a promise lets us support projects that don't allow top-level await.
+ */
+const withSkipTheBuild = (
   skipTheBuildConfig: SkipTheBuildConfig,
-  baseViteConfig: UserConfig,
-): Promise<UserConfig> => {
-  const skipTheBuildViteConfig = await getViteConfig(skipTheBuildConfig);
-  return mergeConfig(skipTheBuildViteConfig, baseViteConfig);
+  baseViteConfig: UserConfigExport,
+): ((viteEnv: ConfigEnv) => Promise<UserConfig>) => {
+  const asyncUserConfigFn = async (viteEnv: ConfigEnv) => {
+    const skipTheBuildViteConfig = await getViteConfig(skipTheBuildConfig);
+    const otherConfig = await resolveFnOrPromise<UserConfig, [ConfigEnv]>(baseViteConfig, viteEnv);
+    return mergeConfig(skipTheBuildViteConfig, otherConfig);
+  };
+  return asyncUserConfigFn;
 };
 
 export { getExportConditions, getViteConfig, withSkipTheBuild };

@@ -1,6 +1,6 @@
 {
   "name": "skip-the-build",
-  "version": "0.1.0+4852ef7a",
+  "version": "0.1.0+d9c454d2",
   "description": "Speed up local dev by using local libraries without building them",
   "keywords": [],
   "license": "MIT",
@@ -77,5 +77,5 @@
     "zod": "^4.3.6"
   },
   "peerDependencies": {},
-  "yalcSig": "4852ef7a1c8644899596275390f8cfd1"
+  "yalcSig": "d9c454d20366673f88c61724b4b0c5e8"
 }

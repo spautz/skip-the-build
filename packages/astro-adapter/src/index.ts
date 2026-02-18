@@ -19,12 +19,17 @@ const getAstroConfig = async (skipTheBuildConfig: SkipTheBuildConfig): Promise<A
   return {};
 };
 
-const withSkipTheBuild = async (
+type AstroUserConfigFn = () => Promise<AstroUserConfig>;
+
+const withSkipTheBuild = (
   skipTheBuildConfig: SkipTheBuildConfig,
   baseAstroConfig: AstroUserConfig,
-): Promise<AstroUserConfig> => {
-  const skipTheBuildAstroConfig = await getAstroConfig(skipTheBuildConfig);
-  return mergeConfig(skipTheBuildAstroConfig, baseAstroConfig);
+): AstroUserConfigFn => {
+  const asyncAstroConfigFn = async () => {
+    const skipTheBuildAstroConfig = await getAstroConfig(skipTheBuildConfig);
+    return mergeConfig(skipTheBuildAstroConfig, baseAstroConfig);
+  };
+  return asyncAstroConfigFn;
 };
 
 export { getExportConditions, getAstroConfig, withSkipTheBuild };
