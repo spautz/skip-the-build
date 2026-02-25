@@ -1,7 +1,7 @@
 import process from 'node:process';
 
-const hasInteractiveTTY = () => process.stdout.isTTY;
+const hasInteractiveTTY = (): boolean => process.stdout.isTTY;
 
-const noInteractiveTTY = () => !hasInteractiveTTY();
+const noInteractiveTTY = (): boolean => !hasInteractiveTTY();
 
 export { hasInteractiveTTY, noInteractiveTTY };

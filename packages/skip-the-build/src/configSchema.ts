@@ -1,3 +1,4 @@
+import type { ZodObject } from 'zod';
 import z from 'zod/v4';
 
 // An explicit type is necessary because Zod cannot self-infer recursive types.
@@ -29,6 +30,9 @@ const internal_configSchema = z.strictObject({
   }),
 });
 
+// @ts-expect-error
+const configSchema: ZodObject<SkipTheBuildConfigObject> = internal_configSchema;
+
 type SkipTheBuildConfigObject = {
   extend?: Partial<SkipTheBuildConfigObject> | Array<Partial<SkipTheBuildConfigObject>> | undefined;
   skipWhen?: Array<Internal_Rule>;
@@ -55,5 +59,5 @@ null as unknown as SkipTheBuildConfigObject satisfies z.infer<typeof internal_co
 
 const defineSkipTheBuildConfig = (config: SkipTheBuildConfig): SkipTheBuildConfig => config;
 
-export type { Internal_Rule, SkipTheBuildConfig };
-export { internal_configSchema, defineSkipTheBuildConfig };
+export type { Internal_Rule, SkipTheBuildConfig, SkipTheBuildConfigObject };
+export { configSchema as internal_configSchema, defineSkipTheBuildConfig };

@@ -10,7 +10,7 @@ const internal_runGit = async (args: Array<string>): Promise<string | undefined>
   });
 
   const output = String(stdout).trim();
-  return output.length ? output : undefined;
+  return output?.length ? output : undefined;
 };
 
 const internal_stringMatches = (value: string | undefined, pattern: string | RegExp) => {
@@ -38,16 +38,16 @@ const internal_getCurrentBranch = async (): Promise<string | undefined> => {
   return branchOrHead;
 };
 
-const isGitBranch = async (pattern: string | RegExp) => {
+const isGitBranch = async (pattern: string | RegExp): Promise<boolean> => {
   const branchName = await internal_getCurrentBranch();
   return internal_stringMatches(branchName, pattern);
 };
 
-const notGitBranch = async (pattern: string | RegExp) => {
+const notGitBranch = async (pattern: string | RegExp): Promise<boolean> => {
   return !(await isGitBranch(pattern));
 };
 
-const isShallowClone = async () => {
+const isShallowClone = async (): Promise<boolean> => {
   const shallowFlag = await internal_runGit(['rev-parse', '--is-shallow-repository']);
   return shallowFlag === 'true';
 };

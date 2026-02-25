@@ -95,9 +95,7 @@ the package's `.js` and `.d.ts` files each time the source changes.
 
 
 Full docs:
-* [Config file](http://spautz.github.io/skip-the-build/core/config/)
-* [All Rules](http://spautz.github.io/skip-the-build/core/rules/)
-* [Presets](http://spautz.github.io/skip-the-build/core/presets/)
+* [Setting up export conditions](http://spautz.github.io/skip-the-build/export-conditions/)
 
 ### 3. Add it to your build configs
 
@@ -157,8 +155,8 @@ This is the same information as the table above.
 
 | Framework / Tool | Integration                                                                                                                                                                                                                                                                                   |
 |:-----------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Angular          | [`@Skip-The-build/angular-with-webpack`](http://spautz.github.io/skip-the-build/angular-with-webpack/)                                                                                                                                                                                        |
-| Astro            | [`@Skip-The-build/astro`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                               |
+| Angular          | [`@skip-The-build/angular-with-webpack`](http://spautz.github.io/skip-the-build/angular-with-webpack/)                                                                                                                                                                                        |
+| Astro            | [`@skip-The-build/astro`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                               |
 | Cypress          | Not planned, but straightforward: request it or contribute a PR                                                                                                                                                                                                                               |
 | Jest             | Not planned, but straightforward: request it or contribute a PR                                                                                                                                                                                                                               |
 | Next.js          | [`@skip-the-build/nextjs-with-webpack`](http://spautz.github.io/skip-the-build/nextjs-with-webpack-adapter/) if using Webpack. (Turbobuild not supported; see note below)                                                                                                                     |
@@ -166,13 +164,13 @@ This is the same information as the table above.
 | Parcel           | Not planned, but straightforward: request it or contribute a PR                                                                                                                                                                                                                               |
 | React Native     | Not supported                                                                                                                                                                                                                                                                                 |
 | React-Scripts    | Not officially supported, but [`@skip-the-build/webpack`](http://spautz.github.io/skip-the-build/webpack-adapter/) will work if using CRACO, React-App-Rewired, or similar                                                                                                                    |
-| React-Router v7  | [`@Skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
+| React-Router v7  | [`@skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
 | Remix 3          | Not yet implemented                                                                                                                                                                                                                                                                           |
 | Storybook        | Depends on config. Dedicated helpers not yet implemented.                                                                                                                                                                                                                                     |
-| Tanstack Start   | [`@Skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
+| Tanstack Start   | [`@skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
 | Turbopack        | Not supported: [resolve.conditionNames not supported](https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#missing-webpack-loader-features) ([issue #78912](https://github.com/vercel/next.js/discussions/78912)), and AI called potential workarounds "slightly cursed" |
 | Vite             | [`@skip-the-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
-| Vitest           | [`@Skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
+| Vitest           | [`@skip-The-build/vite`](http://spautz.github.io/skip-the-build/vite-adapter/)                                                                                                                                                                                                                |
 | Webpack          | [`@skip-the-build/webpack`](http://spautz.github.io/skip-the-build/webpack-adapter/)                                                                                                                                                                                                          |
 
 

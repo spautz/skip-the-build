@@ -1,31 +1,35 @@
-import type { SkipTheBuildConfig } from '../configSchema.ts';
+import type { SkipTheBuildConfigObject } from '../configSchema.ts';
 import { envVarIsEnabled, isCI, isDevelopmentMode } from '../rules/environmentRules.ts';
 import { isGitBranch } from '../rules/gitRules.ts';
 import { hasInteractiveTTY } from '../rules/processRules.ts';
 
-const alwaysSkipPreset = {
+type SkipTheBuildPreset = Partial<SkipTheBuildConfigObject>;
+
+const alwaysSkipPreset: SkipTheBuildPreset = {
   skipWhen: [true],
-} satisfies Partial<SkipTheBuildConfig>;
+};
 
-const neverSkipPreset = {
+const neverSkipPreset: SkipTheBuildPreset = {
   neverSkipWhen: [true],
-} satisfies Partial<SkipTheBuildConfig>;
+};
 
-const defaultPreset = {
+const defaultPreset: SkipTheBuildPreset = {
   skipWhen: [hasInteractiveTTY],
   neverSkipWhen: [isCI, isGitBranch('main')],
-} satisfies Partial<SkipTheBuildConfig>;
+};
 
-const devModeOnlyPreset = {
+const devModeOnlyPreset: SkipTheBuildPreset = {
   skipWhen: [isDevelopmentMode],
   neverSkipWhen: [isCI],
-} satisfies Partial<SkipTheBuildConfig>;
+};
 
-const envVarOnlyPreset = {
+const envVarOnlyPreset: SkipTheBuildPreset = {
   skipWhen: [envVarIsEnabled('SKIP_THE_BUILD')],
-} satisfies Partial<SkipTheBuildConfig>;
+};
 
-const presets = {
+type PresetName = 'alwaysSkip' | 'default' | 'devModeOnly' | 'envVarOnly' | 'neverSkip';
+
+const presets: Record<PresetName, SkipTheBuildPreset> = {
   alwaysSkip: alwaysSkipPreset,
   default: defaultPreset,
   devModeOnly: devModeOnlyPreset,
