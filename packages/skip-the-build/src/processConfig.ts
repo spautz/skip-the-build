@@ -33,7 +33,10 @@ const internal_applyExtendsToConfig = (config: SkipTheBuildConfig): ParsedConfig
 const internal_parseConfig = (rawConfig: SkipTheBuildConfig): ParsedConfig => {
   if (rawConfig !== lastRawConfig) {
     // First make sure it's valid
-    const validatedConfig = internal_configSchema.parse(rawConfig) as SkipTheBuildConfig;
+    const shouldValidate = rawConfig.settings?.validateConfig ?? true;
+    const validatedConfig = shouldValidate
+      ? (internal_configSchema.parse(rawConfig) as SkipTheBuildConfig)
+      : rawConfig;
 
     // Then apply any `extend`ed configs, recursively
     const parsedConfig = internal_applyExtendsToConfig(validatedConfig);

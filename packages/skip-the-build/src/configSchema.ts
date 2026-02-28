@@ -27,6 +27,7 @@ const internal_configSchema = z.strictObject({
   neverSkipWhen: z.array(internal_ruleSchema).optional(),
   settings: z.strictObject({
     exportConditionName: z.union([z.string(), z.array(z.string())]),
+    validateConfig: z.boolean().optional(),
   }),
 });
 
@@ -39,6 +40,7 @@ type SkipTheBuildConfigObject = {
   neverSkipWhen?: Array<Internal_Rule>;
   settings: {
     exportConditionName: string | Array<string>;
+    validateConfig?: boolean;
   };
 };
 
