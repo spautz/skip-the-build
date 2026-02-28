@@ -29,7 +29,7 @@
       // Each external-test has its own linting config, following the conventions of its framework
       "!external-tests",
       // @TODO: Restore demos
-      "!demos/angular-v21-example"
+      "!demos/angular-v21-demo"
     ],
     // 2mb
     "maxSize": 2097152

@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",
-    "serve:ssr:angular-v21-example": "node dist/angular-v21-example/server/server.mjs"
+    "serve:ssr:angular-v21-demo": "node dist/angular-v21-demo/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,

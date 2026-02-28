@@ -15,7 +15,7 @@ To recreate this project with the same configuration:
 
 ```sh
 # recreate this project
-pnpm dlx sv create --template minimal --types ts --add storybook --install pnpm sveltekit-v2-example
+pnpm dlx sv create --template minimal --types ts --add storybook --install pnpm sveltekit-v2-demo
 ```
 
 ## Developing

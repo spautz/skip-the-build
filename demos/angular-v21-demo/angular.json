@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "angular-v21-example": {
+    "angular-v21-demo": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -59,10 +59,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-v21-example:build:production"
+              "buildTarget": "angular-v21-demo:build:production"
             },
             "development": {
-              "buildTarget": "angular-v21-example:build:development"
+              "buildTarget": "angular-v21-demo:build:development"
             }
           },
           "defaultConfiguration": "development"

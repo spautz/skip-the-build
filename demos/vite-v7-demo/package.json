@@ -3,12 +3,12 @@
   "private": true,
   "description": "Vite demo of skip-the-build",
   "license": "MIT",
-  "homepage": "https://github.com/spautz/skip-the-build/blob/main/demos/vite-v7-example#readme",
+  "homepage": "https://github.com/spautz/skip-the-build/blob/main/demos/vite-v7-demo#readme",
   "bugs": "https://github.com/spautz/skip-the-build/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spautz/skip-the-build.git",
-    "directory": "demos/vite-v7-example"
+    "directory": "demos/vite-v7-demo"
   },
   "author": {
     "name": "Steven Pautz",

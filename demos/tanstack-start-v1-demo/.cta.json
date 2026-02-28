@@ -1,5 +1,5 @@
 {
-  "projectName": "tanstack-start-v1-example",
+  "projectName": "tanstack-start-v1-demo",
   "mode": "file-router",
   "typescript": true,
   "packageManager": "pnpm",

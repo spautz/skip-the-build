@@ -14,9 +14,9 @@ const testPathsToExclude = [
   // Tests disabled for slow-package-example because they are .. just too slow
   'packages/slow-package-example/**',
   // Svelte tests require processing `.svelte` files: not worth the effort for workspace-level runs
-  'demos/sveltekit-v2-example',
+  'demos/sveltekit-v2-demo',
   // @TODO: Restore demos
-  'demos/angular-v21-example',
+  'demos/angular-v21-demo',
 ];
 
 const vitestConfig: UserConfig = defineConfig({
