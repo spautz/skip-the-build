@@ -19,6 +19,10 @@ allowBuilds:
   sharp: true
   unrs-resolver: false
 
+minimumReleaseAgeExclude:
+  - "skip-the-build"
+  - "@skip-the-build/*"
+
 # Workspace
 
 packages:
