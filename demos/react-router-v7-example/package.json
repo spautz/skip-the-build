@@ -1,7 +1,7 @@
 {
-  "name": "react-router-v7-example",
-  "version": "0.1.0",
+  "name": "@spautz/skip-the-build--react-router-v7-demo",
   "private": true,
+  "description": "React-Router v7 demo of skip-the-build",
   "devDependencies": {
     "cra-template": "1.3.0",
     "react": "catalog:",

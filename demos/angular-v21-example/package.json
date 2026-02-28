@@ -1,6 +1,7 @@
 {
-  "name": "angular-v21-example",
-  "version": "0.0.0",
+  "name": "@spautz/skip-the-build--angular-v21-demo",
+  "private": true,
+  "description": "Angular demo of skip-the-build",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,7 +22,6 @@
       }
     ]
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "^21.1.0",
     "@angular/compiler": "^21.1.0",

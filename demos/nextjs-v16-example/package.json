@@ -1,7 +1,7 @@
 {
-  "name": "nextjs-v16-example",
-  "version": "0.1.0",
+  "name": "@spautz/skip-the-build--nextjs-v16-demo",
   "private": true,
+  "description": "NextJS demo of skip-the-build, using the Webpack adapter",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

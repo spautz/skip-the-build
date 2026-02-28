@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0
+
+- A few minor type fixes
+- Mark API as stable for 1.0
+
 ## 0.2.0
 
 ### Minor Changes

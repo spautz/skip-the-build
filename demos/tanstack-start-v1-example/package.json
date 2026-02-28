@@ -1,5 +1,5 @@
 {
-  "name": "@spautz/skip-the-build--tanstack-start-v1-example",
+  "name": "@spautz/skip-the-build--tanstack-start-v1-demo",
   "private": true,
   "description": "Tanstack-Start demo of skip-the-build, using the Vite adapter",
   "license": "MIT",

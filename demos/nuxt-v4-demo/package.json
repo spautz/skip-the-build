@@ -1,7 +1,8 @@
 {
-  "name": "nuxt-v4-demo",
-  "type": "module",
+  "name": "@spautz/skip-the-build--nuxt-v4-demo",
   "private": true,
+  "description": "Nuxt demo of skip-the-build",
+  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

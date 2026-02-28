@@ -1,5 +1,5 @@
 {
-  "name": "@spautz/skip-the-build--sveltekit-v2-example",
+  "name": "@spautz/skip-the-build--sveltekit-v2-demo",
   "private": true,
   "description": "Svelte demo of skip-the-build, using the Vite adapter",
   "license": "MIT",

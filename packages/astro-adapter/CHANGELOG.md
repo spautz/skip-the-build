@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies
+  - skip-the-build@1.0.0
+  - @skip-the-build/vite@1.1.1
+
 ## 1.1.0
 
 ### Patch Changes
