@@ -32,4 +32,4 @@ async function resolveFnOrPromise<ValueType, ExtraArgsType extends Array<unknown
   return value2;
 }
 
-export { deepMerge, resolveFnOrPromise };
+export { deepMerge, isPlainObject, resolveFnOrPromise };

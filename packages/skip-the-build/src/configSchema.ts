@@ -5,7 +5,7 @@ import z from 'zod/v4';
 // @TODO: Send down an abortSignal to short-circuit `or`/`any` cases
 type Internal_Rule = boolean | (() => Internal_Rule) | Promise<Internal_Rule>;
 
-const internal_ruleSchema: z.ZodType<Internal_Rule> = z.lazy(() =>
+const internal_ruleSchemaRaw = z.lazy(() =>
   z.union([
     z.boolean(),
     z.function({ output: internal_ruleSchema }),
@@ -16,13 +16,21 @@ const internal_ruleSchema: z.ZodType<Internal_Rule> = z.lazy(() =>
 // Ensure the schema matches our manual type
 null as unknown as Internal_Rule satisfies z.infer<typeof internal_ruleSchema>;
 
+const internal_ruleSchema: z.ZodType<Internal_Rule> = internal_ruleSchemaRaw;
+
+const internal_partialConfigSchema = z.strictObject({
+  extend: z.union([z.unknown(), z.array(z.unknown())]).optional(),
+  skipWhen: z.array(internal_ruleSchema).optional(),
+  neverSkipWhen: z.array(internal_ruleSchema).optional(),
+  settings: z
+    .strictObject({
+      exportConditionName: z.union([z.string(), z.array(z.string())]).optional(),
+      validateConfig: z.boolean().optional(),
+    })
+    .optional(),
+});
+
 const internal_configSchema = z.strictObject({
-  get extend() {
-    // Recurse
-    return z
-      .union([internal_configSchema.partial(), z.array(internal_configSchema.partial())])
-      .optional();
-  },
   skipWhen: z.array(internal_ruleSchema).optional(),
   neverSkipWhen: z.array(internal_ruleSchema).optional(),
   settings: z.strictObject({
@@ -32,10 +40,10 @@ const internal_configSchema = z.strictObject({
 });
 
 // @ts-expect-error
-const configSchema: ZodObject<SkipTheBuildConfigObject> = internal_configSchema;
+const configSchema: ZodObject<SkipTheBuildResolvedConfig> = internal_configSchema;
 
 type SkipTheBuildConfigObject = {
-  extend?: Partial<SkipTheBuildConfigObject> | Array<Partial<SkipTheBuildConfigObject>> | undefined;
+  extend?: SkipTheBuildConfig | Array<SkipTheBuildConfig> | undefined;
   skipWhen?: Array<Internal_Rule>;
   neverSkipWhen?: Array<Internal_Rule>;
   settings: {
@@ -44,22 +52,41 @@ type SkipTheBuildConfigObject = {
   };
 };
 
-// @TODO:
-// type SkipTheBuildConfigFn = () => SkipTheBuildConfigObject | Promise<SkipTheBuildConfigObject>;
-// type SkipTheBuildConfigPromise =
-//   | Promise<SkipTheBuildConfigObject>
-//   | Promise<() => SkipTheBuildConfigObject>;
-//
-// type SkipTheBuildConfig =
-//   | SkipTheBuildConfigObject
-//   | SkipTheBuildConfigFn
-//   | SkipTheBuildConfigPromise;
-type SkipTheBuildConfig = SkipTheBuildConfigObject;
+type SkipTheBuildConfigPartialObject = {
+  extend?: SkipTheBuildConfig | Array<SkipTheBuildConfig> | undefined;
+  skipWhen?: Array<Internal_Rule>;
+  neverSkipWhen?: Array<Internal_Rule>;
+  settings?: Partial<SkipTheBuildConfigObject['settings']>;
+};
+
+type SkipTheBuildResolvedConfig = Omit<SkipTheBuildConfigObject, 'extend'>;
+
+type SkipTheBuildConfigValue = SkipTheBuildConfigObject | SkipTheBuildConfigPartialObject;
+type SkipTheBuildConfigFn = () => SkipTheBuildConfigValue | Promise<SkipTheBuildConfigValue>;
+type SkipTheBuildConfigPromise = Promise<SkipTheBuildConfigValue>;
+
+type SkipTheBuildConfig =
+  | SkipTheBuildConfigValue
+  | SkipTheBuildConfigFn
+  | SkipTheBuildConfigPromise;
 
 // Ensure the schema matches our manual type
-null as unknown as SkipTheBuildConfigObject satisfies z.infer<typeof internal_configSchema>;
+null as unknown as SkipTheBuildResolvedConfig satisfies z.infer<typeof internal_configSchema>;
+null as unknown as SkipTheBuildConfigPartialObject satisfies z.infer<
+  typeof internal_partialConfigSchema
+>;
 
 const defineSkipTheBuildConfig = (config: SkipTheBuildConfig): SkipTheBuildConfig => config;
 
-export type { Internal_Rule, SkipTheBuildConfig, SkipTheBuildConfigObject };
-export { configSchema as internal_configSchema, defineSkipTheBuildConfig };
+export type {
+  Internal_Rule,
+  SkipTheBuildConfig,
+  SkipTheBuildConfigObject,
+  SkipTheBuildConfigPartialObject,
+  SkipTheBuildResolvedConfig,
+};
+export {
+  configSchema as internal_configSchema,
+  internal_partialConfigSchema,
+  defineSkipTheBuildConfig,
+};

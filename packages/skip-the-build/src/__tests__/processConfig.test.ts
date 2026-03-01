@@ -3,13 +3,13 @@ import { describe, expect, test } from 'vitest';
 import { evaluateConfig, getExportConditions, internal_parseConfig } from '../processConfig.js';
 
 describe('processConfig', () => {
-  test('internal_parseConfig merges extended configs and drops extend from output', () => {
+  test('internal_parseConfig merges extended configs and drops extend from output', async () => {
     const baseConfig = {
       settings: { exportConditionName: 'base-export' },
       skipWhen: [true],
     };
 
-    const parsed = internal_parseConfig({
+    const parsed = await internal_parseConfig({
       extend: baseConfig,
       skipWhen: [false],
       settings: { exportConditionName: 'override-export' },
@@ -18,6 +18,23 @@ describe('processConfig', () => {
     expect(parsed.settings.exportConditionName).toBe('override-export');
     expect(parsed.skipWhen).toEqual([true, false]);
     expect(parsed).not.toHaveProperty('extend');
+  });
+
+  test('internal_parseConfig resolves indirect configs for extends', async () => {
+    const parsed = await internal_parseConfig(async () => ({
+      extend: [
+        () => ({
+          skipWhen: [true],
+        }),
+        Promise.resolve({
+          neverSkipWhen: [false],
+        }),
+      ],
+      settings: { exportConditionName: 'indirect' },
+    }));
+
+    expect(parsed.skipWhen).toEqual([true]);
+    expect(parsed.neverSkipWhen).toEqual([false]);
   });
 
   test('evaluateConfig obeys skipWhen truthiness and neverSkipWhen can block', async () => {

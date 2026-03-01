@@ -1,48 +1,98 @@
 import {
   type Internal_Rule,
   internal_configSchema,
+  internal_partialConfigSchema,
   type SkipTheBuildConfig,
+  type SkipTheBuildConfigPartialObject,
+  type SkipTheBuildResolvedConfig,
 } from './configSchema.ts';
-import { deepMerge, resolveFnOrPromise } from './utils.ts';
+import { deepMerge, isPlainObject, resolveFnOrPromise } from './utils.ts';
 
 // Parsing applies any base configs
-type ParsedConfig = Omit<SkipTheBuildConfig, 'extend'>;
+type ParsedConfig = SkipTheBuildResolvedConfig;
+type PartialParsedConfig = Partial<ParsedConfig>;
 
 // Simple local cache to avoid re-parsing the config repeatedly
 let lastRawConfig: SkipTheBuildConfig;
 let lastParsedConfig: ParsedConfig;
 let lastConfigDidSkip: boolean;
 
-const internal_applyExtendsToConfig = (config: SkipTheBuildConfig): ParsedConfig => {
+const internal_validatePartialConfig = (
+  config: SkipTheBuildConfigPartialObject,
+  label: string,
+): SkipTheBuildConfigPartialObject => {
+  const result = internal_partialConfigSchema.safeParse(config);
+  if (!result.success) {
+    throw new Error(`${label} failed validation.`, { cause: result.error });
+  }
+  return result.data;
+};
+
+const internal_validateResolvedConfig = (config: ParsedConfig, label: string): ParsedConfig => {
+  const result = internal_configSchema.safeParse(config);
+  if (!result.success) {
+    throw new Error(`${label} failed validation.`, { cause: result.error });
+  }
+  return result.data;
+};
+
+const internal_resolveConfigValue = async (
+  config: SkipTheBuildConfig,
+  label: string,
+  shouldValidate: boolean,
+): Promise<SkipTheBuildConfigPartialObject> => {
+  const resolvedConfig = await resolveFnOrPromise(config);
+  if (!isPlainObject(resolvedConfig)) {
+    throw new Error(`${label} must resolve to an object.`);
+  }
+  const resolvedObject = resolvedConfig as SkipTheBuildConfigPartialObject;
+  return shouldValidate ? internal_validatePartialConfig(resolvedObject, label) : resolvedObject;
+};
+
+const internal_applyExtendsToConfig = async (
+  config: SkipTheBuildConfigPartialObject,
+  shouldValidate: boolean,
+): Promise<PartialParsedConfig> => {
   const { extend, ...otherFields } = config;
+  const configsToMerge: Array<PartialParsedConfig> = [];
 
   if (extend) {
-    const allConfigsToMerge = [...(Array.isArray(extend) ? extend : [extend]), { ...otherFields }];
-    const parsedConfig = allConfigsToMerge.reduce<ParsedConfig>((acc, configToMerge) => {
+    const extendedConfigs = Array.isArray(extend) ? extend : [extend];
+    for (let index = 0; index < extendedConfigs.length; index += 1) {
+      const label = `Extended config (${index + 1})`;
+      const resolvedExtend = await internal_resolveConfigValue(
+        extendedConfigs[index],
+        label,
+        shouldValidate,
+      );
       // Recurse in case the extended config extend other configs
-      return deepMerge(acc, internal_applyExtendsToConfig(configToMerge as SkipTheBuildConfig));
-    }, {} as ParsedConfig);
-
-    return parsedConfig;
+      configsToMerge.push(await internal_applyExtendsToConfig(resolvedExtend, shouldValidate));
+    }
   }
-  // else: nothing to do
-  return { ...otherFields };
+
+  configsToMerge.push({ ...otherFields });
+  return configsToMerge.reduce<PartialParsedConfig>((acc, configToMerge) => {
+    return deepMerge(acc, configToMerge);
+  }, {} as PartialParsedConfig);
 };
 
 // @TODO: future expansion: V1, V2, etc
-const internal_parseConfig = (rawConfig: SkipTheBuildConfig): ParsedConfig => {
+const internal_parseConfig = async (rawConfig: SkipTheBuildConfig): Promise<ParsedConfig> => {
   if (rawConfig !== lastRawConfig) {
-    // First make sure it's valid
-    const shouldValidate = rawConfig.settings?.validateConfig ?? true;
-    const validatedConfig = shouldValidate
-      ? (internal_configSchema.parse(rawConfig) as SkipTheBuildConfig)
-      : rawConfig;
+    const resolvedRoot = await internal_resolveConfigValue(rawConfig, 'User config', false);
+    const shouldValidate = resolvedRoot.settings?.validateConfig ?? true;
+    const validatedRoot = shouldValidate
+      ? internal_validatePartialConfig(resolvedRoot, 'User config')
+      : resolvedRoot;
 
     // Then apply any `extend`ed configs, recursively
-    const parsedConfig = internal_applyExtendsToConfig(validatedConfig);
+    const parsedConfig = await internal_applyExtendsToConfig(validatedRoot, shouldValidate);
+    const finalConfig = shouldValidate
+      ? internal_validateResolvedConfig(parsedConfig as ParsedConfig, 'Resolved config')
+      : (parsedConfig as ParsedConfig);
 
     lastRawConfig = rawConfig;
-    lastParsedConfig = parsedConfig;
+    lastParsedConfig = finalConfig;
   }
   return lastParsedConfig;
 };
@@ -64,7 +114,7 @@ const internal_evaluateRule = async (rule: Internal_Rule): Promise<boolean> => {
 
 const evaluateConfig = async (rawConfig: SkipTheBuildConfig): Promise<boolean> => {
   if (rawConfig !== lastRawConfig) {
-    const { skipWhen, neverSkipWhen } = internal_parseConfig(await resolveFnOrPromise(rawConfig));
+    const { skipWhen, neverSkipWhen } = await internal_parseConfig(rawConfig);
 
     let passed = true;
     if (skipWhen) {
@@ -98,7 +148,7 @@ const evaluateConfig = async (rawConfig: SkipTheBuildConfig): Promise<boolean> =
 
 const getExportConditions = async (rawConfig: SkipTheBuildConfig): Promise<Array<string>> => {
   if (await evaluateConfig(rawConfig)) {
-    const parsedConfig = internal_parseConfig(rawConfig);
+    const parsedConfig = await internal_parseConfig(rawConfig);
     const { exportConditionName } = parsedConfig.settings;
 
     if (Array.isArray(exportConditionName)) {
