@@ -1,19 +1,22 @@
 import { describe, expect, test } from 'vitest';
 
-import { internal_configSchema, internal_partialConfigSchema } from '../index.js';
+import { internal_finalConfigSchema, internal_partialConfigSchema } from '../index.js';
 
-describe('internal_configSchema', () => {
+describe('internal_finalConfigSchema', () => {
   test('accepts valid objects', () => {
-    const result = internal_configSchema.safeParse({
+    const result = internal_finalConfigSchema.safeParse({
+      skipWhen: [],
+      neverSkipWhen: [],
       settings: {
         exportConditionName: 'unit-test-condition',
+        validateConfig: true,
       },
     });
     expect(result.error).toBeFalsy();
   });
 
   test('rejects invalid objects', () => {
-    const result = internal_configSchema.safeParse({});
+    const result = internal_finalConfigSchema.safeParse({});
     expect(result.error).toBeTruthy();
     expect(result.error?.name).toBe('ZodError');
   });

@@ -7,6 +7,7 @@ describe('processConfig', () => {
     const baseConfig = {
       settings: { exportConditionName: 'base-export' },
       skipWhen: [true],
+      neverSkipWhen: [false],
     };
 
     const parsed = await internal_parseConfig({
@@ -17,6 +18,7 @@ describe('processConfig', () => {
 
     expect(parsed.settings.exportConditionName).toBe('override-export');
     expect(parsed.skipWhen).toEqual([true, false]);
+    expect(parsed.neverSkipWhen).toEqual([false]);
     expect(parsed).not.toHaveProperty('extend');
   });
 
@@ -41,6 +43,7 @@ describe('processConfig', () => {
     const passingConfig = {
       settings: { exportConditionName: 'pass' },
       skipWhen: [() => false, () => () => true],
+      neverSkipWhen: [],
     };
 
     expect(await evaluateConfig(passingConfig)).toBe(true);
@@ -58,6 +61,7 @@ describe('processConfig', () => {
     const failingConfig = {
       settings: { exportConditionName: 'fail' },
       skipWhen: [false],
+      neverSkipWhen: [],
     };
 
     expect(await getExportConditions(failingConfig)).toEqual([]);
@@ -65,6 +69,7 @@ describe('processConfig', () => {
     const passingConfig = {
       settings: { exportConditionName: ['first', 'second'] },
       skipWhen: [true],
+      neverSkipWhen: [],
     };
 
     expect(await getExportConditions(passingConfig)).toEqual(['first', 'second']);
