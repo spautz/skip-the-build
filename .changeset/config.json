@@ -11,7 +11,6 @@
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",
-  "updateInternalDependencies": "patch",
   "ignore": [
     "@spautz/skip-the-build--angular-v21-demo",
     "@spautz/skip-the-build--astro-v5-demo",
