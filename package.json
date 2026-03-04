@@ -87,7 +87,7 @@
     "lodash": "4.17.23",
     "only-allow": "1.2.2",
     "rimraf": "6.1.3",
-    "skip-the-build": "catalog:localdev",
+    "skip-the-build": "next",
     "tiny-immutable-set": "1.3.1",
     "tsdown": "catalog:",
     "turbo": "2.8.10",
@@ -96,6 +96,14 @@
     "vitest": "catalog:",
     "yalc": "1.0.0-pre.53",
     "yargs": "18.0.0"
+  },
+  "pnpm": {
+    "COMMENT_pnpm_overrides_1": "This is a quick way to switch back and forth between different",
+    "COMMENT_pnpm_overrides_2": "versions of skip-the-build in local dev. (We don't use catalogs",
+    "COMMENT_pnpm_overrides_3": "because catalogs don't allow 'workspace:')",
+    "overrides_DISABLED": {
+      "skip-the-build": "next"
+    }
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,cjs,mjs,cts,mts}": [

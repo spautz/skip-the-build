@@ -76,7 +76,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "publint": "catalog:",
-    "skip-the-build": "catalog:localdev",
+    "skip-the-build": "workspace:*",
     "tsdown": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
