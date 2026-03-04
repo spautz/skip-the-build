@@ -61,7 +61,7 @@
     "@types/node": "catalog:",
     "storybook": "10.2.10",
     "svelte": "5.53.2",
-    "svelte-check": "4.4.3",
+    "svelte-check": "4.4.4",
     "typescript": "catalog:",
     "vite": "catalog:"
   }

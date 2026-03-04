@@ -45,7 +45,7 @@
   "dependencies": {
     "@spautz/slow-package-example": "workspace:",
     "@storybook/react-vite": "10.2.10",
-    "@tailwindcss/vite": "4.2.0",
+    "@tailwindcss/vite": "4.2.1",
     "@tanstack/react-devtools": "0.9.6",
     "@tanstack/react-router": "1.162.4",
     "@tanstack/react-router-devtools": "1.162.4",
@@ -57,7 +57,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "storybook": "10.2.10",
-    "tailwindcss": "4.2.0",
+    "tailwindcss": "4.2.1",
     "vite-tsconfig-paths": "6.1.1"
   },
   "devDependencies": {
