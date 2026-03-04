@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- Support a variety of config values: a skip-the-build config can now be provided via a function or a promise (or a nested combination of those), in addition to as a plain object ([2085f04](https://github.com/spautz/skip-the-build/commit/2085f046dbb03004f736c3c51dc0a0ac368dab22))
+
 ## 1.0.0
 
 - A few minor type fixes
