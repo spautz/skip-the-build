@@ -1,13 +1,5 @@
 # Changelog
 
-## 2.0.0
-
-### Patch Changes
-
-- Updated dependencies ([2085f04](https://github.com/spautz/skip-the-build/commit/2085f046dbb03004f736c3c51dc0a0ac368dab22))
-  - skip-the-build@1.1.0
-  - @skip-the-build/vite@2.0.0
-
 ## 1.1.1
 
 ### Patch Changes
