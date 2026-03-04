@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- Fix type error with defineConfig/defineSkipTheBuildConfig ([28802c1](https://github.com/spautz/skip-the-build/commit/28802c141ae39bcb6caa3080804bdcef3697d532))
+
 ## 1.1.0
 
 ### Minor Changes
