@@ -1,8 +1,8 @@
-{
-  "label": "Core package",
-  "position": 4,
+﻿{
+  "label": "Core API",
+  "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "The main 'skip-the-build' package"
+    "description": "The main skip-the-build package"
   }
 }

@@ -1,21 +1,21 @@
----
+﻿---
 sidebar_position: 3
 ---
 
-# Overview
+# Presets
 
-This is a sample docs site for the packages in [spautz/skip-the-build](https://github.com/spautz/skip-the-build)
+Presets are prebuilt configs for common scenarios.
 
---
-
-A preset is a full set of rules for a common scenario. All presets use `exportConditionName: 'local-dev'` by default.
-
-```javascript
+```ts
 import { presets } from 'skip-the-build';
 ```
 
-| Preset name   | When it skips              | Notes                                                                        |
-|:--------------|----------------------------|------------------------------------------------------------------------------|
-| `default`     | Running locally            | Fast for local dev, slow/correct for CI                                      |
-| `devModeOnly` | Running dev builds locally | Extra safe: fast for hot reload and local tests, slow/correct for all builds |
-| `envVarOnly`  | `env.SKIP_THE_BUILD=1`     | For testing                                                                  |
+| Preset | Skip behavior | Notes |
+|:------|:---------------|:------|
+| `alwaysSkip` | Always allows skipping | Useful for local-only experiments |
+| `default` | Allows skipping when the terminal is interactive and blocks on CI or main | Good local default |
+| `devModeOnly` | Allows skipping when `NODE_ENV !== "production"`, blocks on CI | Safe for local dev builds |
+| `envVarOnly` | Allows skipping when `SKIP_THE_BUILD` is enabled | Explicit opt-in |
+| `neverSkip` | Never allows skipping | Useful as a baseline or override |
+
+You can compose presets with your own config using `extend`.

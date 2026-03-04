@@ -1,44 +1,54 @@
----
+﻿---
 sidebar_position: 1
 ---
 
-# Overview
+# Config File
 
-This is a sample docs site for the packages in [spautz/skip-the-build](https://github.com/spautz/skip-the-build)
+A `skip-the-build` config can be an object, a function that returns an object, or a promise.
+You can also compose configs with `extend`.
 
+```ts
+import { defineSkipTheBuildConfig, presets } from 'skip-the-build';
 
---
+export default defineSkipTheBuildConfig({
+  extend: presets.default,
+  settings: {
+    exportConditionName: 'local-dev',
+  },
+});
+```
 
+## Shape
 
-The `skip-the-build.ts` config has three keys:
+### `skipWhen` (array of rules)
 
-#### skipWhen (list of rules)
+The allow list. If any rule evaluates to `true`, a skip is allowed.
+If `skipWhen` is provided and all rules evaluate to `false`, a skip is not allowed.
 
-The conditions when we _may_ skip the build.
+### `neverSkipWhen` (array of rules)
 
-This acts like an allowList: so long as any condition has been met, we'll proceed.
-If no rules are specified, we'll always proceed.
+The deny list. If any rule evaluates to `true`, a skip is not allowed even if `skipWhen` passed.
 
-#### neverSkipWhen (list of rules)
+### `extend` (config or list of configs)
 
-The conditions when we _will never_ skip the build.
+Merge in one or more other configs. Each entry can be an object, a function, or a promise.
+Later configs override earlier ones. Arrays are concatenated.
 
-This acts like a denyList: if any condition is met, we will not proceed -- even if a `skipWhen`
-condition was met.
+### `settings.exportConditionName` (string or array)
 
-#### settings.enableLogs (info | warn | false)
+The export condition(s) to enable when a skip is allowed. This is required when config validation
+is enabled (default).
 
-The amount of internal logs which are emitted when `skip-the-build` runs.
+### `settings.validateConfig` (boolean)
 
-* `info` logs information about rule evaluations, in addition to warnings.
-* `warn` **(default)** logs alerts about unexpected results or non-critical errors.
-* `false` will never log additional information.
+When `true` (default), the config is validated against the schema. Set to `false` to bypass
+validation (useful for advanced setups or staged migrations).
 
-Note that errors will always be shown.
+## Evaluation rules
 
-#### settings.exportConditionName (condition name or names)
+- Rules can be booleans, sync functions, or promises.
+- At least one of `skipWhen` or `neverSkipWhen` must be present when validation is enabled.
+- If `skipWhen` is omitted, a skip is allowed by default and only blocked by `neverSkipWhen`.
+- If you want to always proceed, set `skipWhen: []`.
 
-The [NodeJS condition name](https://nodejs.org/docs/latest/api/packages.html#conditional-exports)
-(or names) which will be used to directly consume packages.
-
-Defaults to `"local-dev"`
+See [Rules](./rules.md) for the available built-in rules.

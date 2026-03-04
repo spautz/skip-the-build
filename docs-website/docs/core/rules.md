@@ -1,53 +1,56 @@
----
+﻿---
 sidebar_position: 2
 ---
 
-# Overview
+# Rules
 
-This is a sample docs site for the packages in [spautz/skip-the-build](https://github.com/spautz/skip-the-build)
+A rule is any value that eventually resolves to a boolean:
 
---
+- `true` or `false`
+- a function that returns a rule
+- a promise that resolves to a rule
 
+Rules may be sync or async. You can also write your own and include them in `skipWhen`
+or `neverSkipWhen`.
 
-A rule is a function that checks some condition and returns either `true` only if the condition
-has been met. Rules may be async, and you can add your own custom conditions by simply adding
-your own functions to `skipWhen` or `neverSkipWhen`.
+## Boolean logic
 
-Many rules have overlapping checks (like `isCI`/`notCI`/`isLocalDev`/`notLocalDev`) --
-pick the one which is most readable for your case.
+| Rule | Returns true if |
+|:-----|:----------------|
+| `and(...rules)` | All rules resolve to true |
+| `or(...rules)` | Any rule resolves to true |
+| `not(rule)` | The rule resolves to false |
 
-#### Environment conditions
+## Environment rules
 
-| Rule                                  | Returns true if:                                                                 |
-|:--------------------------------------|----------------------------------------------------------------------------------|
-| `envVarExists(name)`                  | The env variable has been set at all                                             |
-| `envVarHasValue(name, value\|values)` | The env variable has been set, and it's one of the values provided               |
-| `envVarIsDisabled(name)`              | The env var has either not been set, or it's set to ``, `false`, or `0`          |
-| `envVarIsEnabled(name)`               | The env var has been set, and it's not ``, `false`, or `0`                       |
-| `isCI`                                | [ci-info](https://www.npmjs.com/package/ci-info) detected a CI environment       |
-| `isDevelopmentMode`                   | `NODE_ENV !== "production"`                                                      |
-| `isProductionMode`                    | `NODE_ENV === "production"`                                                      |
-| `isPullRequest`                       | [ci-info](https://www.npmjs.com/package/ci-info) detected a PR                   |
-| `notCI`                               | [ci-info](https://www.npmjs.com/package/ci-info) did not detect a CI environment |
-| `notPullRequest`                      | [ci-info](https://www.npmjs.com/package/ci-info) did not detect a PR             |
+| Rule | Returns true if |
+|:-----|:----------------|
+| `envVarExists(name)` | The env var is set (even to an empty value) |
+| `envVarHasValue(name, value | values)` | The env var matches the provided value(s) |
+| `envVarIsEnabled(name)` | The env var is set to anything except `""`, `"false"`, or `"0"` |
+| `envVarIsDisabled(name)` | The env var is unset or set to `""`, `"false"`, or `"0"` |
+| `isCI()` | `ci-info` detected a CI environment |
+| `notCI()` | `ci-info` did not detect a CI environment |
+| `isProductionMode()` | `NODE_ENV === "production"` |
+| `isDevelopmentMode()` | `NODE_ENV !== "production"` |
+| `isPullRequest()` | `ci-info` detected a pull request (may be `null` on some providers) |
+| `notPullRequest()` | `ci-info` did not detect a pull request |
 
-#### Repo conditions
+## Git rules
 
-| Rule                          | Returns true if:                                            |
-|:------------------------------|-------------------------------------------------------------|
-| `isGitBranch(string\|regex)`  | The current git branch matches the string or pattern        |
-| `notGitBranch(string\|regex)` | The current git branch does not match the string or pattern |
-| `isShallowClone`              | The current git repo is a shallow repository                |
+| Rule | Returns true if |
+|:-----|:----------------|
+| `isGitBranch(nameOrRegex)` | The current branch matches the pattern |
+| `notGitBranch(nameOrRegex)` | The current branch does not match the pattern |
+| `isShallowClone()` | The repo is a shallow clone |
 
-#### General conditions
+## Process rules
 
-| Rule            | Returns true if:                                                            |
-|:----------------|-----------------------------------------------------------------------------|
-| `and(...Rules)` | All rules return true                                                       |
-| `not(Rule)`     | The rule provided did not return true                                       |
-| `or(...Rules)`  | Any rule returns true                                                       |
-| `random(%)`     | Math.rand() is smaller than the number given. (% should be between 0 and 1) |
-| Any function    | The function returns true, or a promise that resolves to true               |
-| Any promise     | The promise resolves to true                                                |
-| Any other value | The value is exactly true                                                   |
+| Rule | Returns true if |
+|:-----|:----------------|
+| `hasInteractiveTTY()` | `process.stdout.isTTY` is true |
+| `noInteractiveTTY()` | `process.stdout.isTTY` is false |
 
+## All rules export
+
+`allRules` is a convenience export that merges all built-in rule functions into one object.
