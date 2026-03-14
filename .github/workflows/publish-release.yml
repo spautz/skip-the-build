@@ -19,9 +19,6 @@ jobs:
       (! github.event.push.head.repo.fork)
         && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         && github.ref_protected == true
-    strategy:
-      matrix:
-        package-name: [skip-the-build, astro-adapter, vite-adapter, webpack-adapter]
     steps:
       - uses: actions/checkout@v6.0.1
         with:
@@ -32,9 +29,9 @@ jobs:
           node-version: nvmrc
 
       - name: Publish to NPM
+        # Pack first to run postpack checks, then use Changesets to publish only unpublished versions.
         run: |
-          cd packages/${{ matrix.package-name }}
-          pnpm pack --out package-${{ matrix.package-name }}-%v.tgz
-          NPM_CONFIG_PROVENANCE=true  pnpm publish --tag next package-${{ matrix.package-name }}*.tgz
+          pnpm -r --filter "./packages/*" exec -- pnpm pack --out package-%v.tgz
+          NPM_CONFIG_PROVENANCE=true pnpm changeset publish --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
