@@ -10,7 +10,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "next": "16.2.3",
+    "next": "16.2.6",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
