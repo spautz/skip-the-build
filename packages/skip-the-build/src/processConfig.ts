@@ -157,4 +157,4 @@ const getExportConditions = async (rawConfig: SkipTheBuildConfig): Promise<Array
   return [];
 };
 
-export { internal_parseConfig, internal_evaluateRule, evaluateConfig, getExportConditions };
+export { evaluateConfig, getExportConditions, internal_evaluateRule, internal_parseConfig };

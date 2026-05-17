@@ -1,9 +1,10 @@
 import { fileURLToPath, URL } from 'node:url';
+import babel from '@rolldown/plugin-babel';
 import { withSkipTheBuild } from '@skip-the-build/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { devtools } from '@tanstack/devtools-vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
-import viteReact from '@vitejs/plugin-react';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { nitro } from 'nitro/vite';
 import { defineConfig, type UserConfigFn } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
@@ -29,10 +30,9 @@ const viteConfig: UserConfigFn = defineConfig(
         }),
         tailwindcss(),
         tanstackStart(),
-        viteReact({
-          babel: {
-            plugins: ['babel-plugin-react-compiler'],
-          },
+        react(),
+        babel({
+          presets: [reactCompilerPreset()],
         }),
       ],
     }),

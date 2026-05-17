@@ -28,4 +28,4 @@ const withSkipTheBuild = async <T extends AstroUserConfig>(
   return mergeConfig(skipTheBuildAstroConfig, baseAstroConfig) as T;
 };
 
-export { getExportConditions, getAstroConfig, withSkipTheBuild };
+export { getAstroConfig, getExportConditions, withSkipTheBuild };

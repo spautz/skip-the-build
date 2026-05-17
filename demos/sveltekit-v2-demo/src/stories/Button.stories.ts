@@ -37,4 +37,4 @@ const Small: Story = {
 };
 
 export default meta;
-export { Primary, Secondary, Large, Small };
+export { Large, Primary, Secondary, Small };

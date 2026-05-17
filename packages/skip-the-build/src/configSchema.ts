@@ -122,17 +122,17 @@ const defineSkipTheBuildConfig = <ConfigType extends SkipTheBuildConfig>(
 ): ConfigType => config;
 
 export type {
-  Internal_Rule,
-  Internal_PartialConfig,
   Internal_FinalConfig,
+  Internal_PartialConfig,
+  Internal_Rule,
   SkipTheBuildConfig,
-  SkipTheBuildConfigObject,
   SkipTheBuildConfigFn,
+  SkipTheBuildConfigObject,
   SkipTheBuildConfigPromise,
 };
 export {
-  internal_finalConfigSchema,
-  internal_partialConfigSchema,
   defineSkipTheBuildConfig,
   defineSkipTheBuildConfig as defineConfig,
+  internal_finalConfigSchema,
+  internal_partialConfigSchema,
 };
