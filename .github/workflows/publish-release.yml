@@ -6,9 +6,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: write
-  id-token: write
+permissions: {}
 
 jobs:
   publish-npm:
@@ -19,19 +17,37 @@ jobs:
       (! github.event.push.head.repo.fork)
         && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         && github.ref_protected == true
+    permissions:
+      contents: read # Required to clone the repository when this template is used in a private repo.
+      id-token: write # Required for npm trusted publishing via GitHub OIDC.
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: ./.github/reusable-workflows/setup-repo
         with:
           node-version: nvmrc
+          enable-package-manager-cache: false
 
       - name: Publish to NPM
-        # Pack first to run postpack checks, then use Changesets to publish only unpublished versions.
         run: |
-          pnpm -r --filter "./packages/*" exec -- pnpm pack --out package-%v.tgz
-          NPM_CONFIG_PROVENANCE=true pnpm changeset publish --tag next
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          pnpm -r --filter "./packages/*" exec pnpm pack --out package-%v.tgz
+          pnpm -r --filter "./packages/*" exec npm publish --provenance --tag next
+
+      - name: Verify published provenance
+        run: |
+          mkdir verify-publish
+          cd verify-publish
+          npm init -y
+
+          # Iterate through package directories to get names and verify
+          for dir in ../packages/*; do
+            if [ -d "$dir" ]; then
+              # Use --ignore-scripts to prevent execution of potentially malicious lifecycle scripts
+              PACKAGE_NAME=$(node -p "require('$dir/package.json').name")
+              npm install "$PACKAGE_NAME@next" --ignore-scripts
+              npm audit signatures --json --include-attestations
+            fi
+          done

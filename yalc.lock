@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "skip-the-build": {
-      "signature": "792cb559a8b5bfef032e8a2763efa965",
+      "signature": "181125a52a4024ea2d494cc351e1eef8",
       "pure": true,
       "replaced": "next"
     }

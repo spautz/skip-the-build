@@ -9,13 +9,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   package-test-coverage:
     name: Per-package code coverage
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     # Only run for the original repo, and only the default branch, and only if it's properly protected
     if: |
       (! github.event.push.head.repo.fork)
@@ -26,19 +27,20 @@ jobs:
         package-name: [skip-the-build]
 
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - uses: ./.github/reusable-workflows/setup-repo
         with:
           node-version: nvmrc
 
       - name: Run package tests
-        run: |
-          cd packages/${{ matrix.package-name }}
-          pnpm exec turbo run test:ci
+        working-directory: packages/${{ matrix.package-name }}
+        run: pnpm exec turbo run test:ci
 
       - name: Report package test coverage to coveralls.io
-        uses: coverallsapp/github-action@v2.3.6
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
         with:
           github-token: ${{ github.token }}
           path-to-lcov: packages/${{ matrix.package-name }}/coverage/lcov.info
