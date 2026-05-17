@@ -74,15 +74,15 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@arethetypeswrong/cli": "catalog:",
-    "publint": "catalog:",
+    "@arethetypeswrong/cli": "catalog:packages",
+    "publint": "catalog:packages",
     "skip-the-build": "workspace:*",
-    "tsdown": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "tsdown": "catalog:packages",
+    "vite": "catalog:packages",
+    "vitest": "catalog:shared"
   },
   "peerDependencies": {
     "skip-the-build": "workspace:^",
-    "vite": "^6.0.0 || ^7.0.0"
+    "vite": "^6.0.0 || ^7.0.0 || ^8.0.0"
   }
 }

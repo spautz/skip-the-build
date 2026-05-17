@@ -40,9 +40,9 @@
     "@angular/cli": "^21.2.10",
     "@angular/compiler-cli": "^21.2.12",
     "@types/express": "^5.0.6",
-    "@types/node": "catalog:",
+    "@types/node": "catalog:demos",
     "jsdom": "^29.1.1",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "typescript": "catalog:demos",
+    "vitest": "catalog:shared"
   }
 }
