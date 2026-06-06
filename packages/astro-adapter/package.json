@@ -80,7 +80,7 @@
     "publint": "catalog:packages",
     "skip-the-build": "workspace:*",
     "tsdown": "catalog:packages",
-    "astro": "6.3.1"
+    "astro": "6.4.2"
   },
   "peerDependencies": {
     "skip-the-build": "workspace:^",

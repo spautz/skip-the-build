@@ -48,7 +48,7 @@
     "@skip-the-build/vite": "workspace:",
     "@types/react": "catalog:demos",
     "@types/react-dom": "catalog:demos",
-    "@vitejs/plugin-react": "6.0.1",
+    "@vitejs/plugin-react": "6.0.2",
     "babel-plugin-react-compiler": "1.0.0",
     "typescript": "catalog:demos",
     "vite": "catalog:demos"
