@@ -67,7 +67,7 @@ fi
 ###################################################################################################
 # Main body
 
-pnpm_or_bun run publish:yalc
+run_command pnpm run publish:yalc
 
 pushd external-tests/$PROFILE
 

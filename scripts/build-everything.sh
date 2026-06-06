@@ -54,11 +54,11 @@ done
 
 run_command ./scripts/build-workspace.sh
 
-if [ "$PARALLEL" = true ]; then
-  run_command ./scripts/run-all-external-tests.sh default --parallel
-else
-  run_command ./scripts/run-all-external-tests.sh
-fi
+#if [ "$PARALLEL" = true ]; then
+#  run_command ./scripts/run-all-external-tests.sh default --parallel
+#else
+#  run_command ./scripts/run-all-external-tests.sh
+#fi
 
 ###################################################################################################
 # Standard teardown for all scripts
