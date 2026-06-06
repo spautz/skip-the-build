@@ -30,34 +30,44 @@ packages:
   - demos/*
   - docs-website
 
-catalog:
-  # Shared between packages and demos:
-  '@types/node': 24.12.4
-  '@types/react': 19.2.14
-  '@types/react-dom': 19.2.3
-  '@testing-library/jest-dom': 6.9.1
-  '@testing-library/react': 16.3.2
-  '@vitest/coverage-v8': 4.1.6
-  '@vitest/ui': 4.1.6
-  react: 19.2.6
-  react-dom: 19.2.6
-  source-map-explorer: 2.5.3
-  typescript: 6.0.3
-  vitest: 4.1.6
-  # For packages/* only:
-  '@arethetypeswrong/cli': 0.18.2
-  '@size-limit/esbuild': 12.1.0
-  '@size-limit/esbuild-why': 12.1.0
-  '@size-limit/file': 12.1.0
-  publint: 0.3.20
-  size-limit: 12.1.0
-  tsdown: 0.22.0
-  # For demos/* only:
-  '@vitejs/plugin-react': 6.0.1
-  vite: 8.0.12
-
-# Named catalogs are looser
 catalogs:
+  # Shared = aligned between packages and demos
+  # (There are some dependencies in common between packages/demos which are not aligned)
+  shared:
+    '@testing-library/jest-dom': 6.9.1
+    '@testing-library/react': 16.3.2
+    '@vitest/coverage-v8': 4.1.6
+    '@vitest/ui': 4.1.6
+    vitest: 4.1.6
+  # Packages use (mostly) up-to-date dependencies and devDependencies
+  packages:
+    '@arethetypeswrong/cli': 0.18.2
+    '@size-limit/esbuild': 12.1.0
+    '@size-limit/esbuild-why': 12.1.0
+    '@size-limit/file': 12.1.0
+    '@types/node': 24.10.9
+    '@types/react': 19.2.14
+    '@types/react-dom': 19.2.3
+    publint: 0.3.20
+    react: 19.2.6
+    react-dom: 19.2.6
+    size-limit: 12.1.0
+    tsdown: 0.22.0
+    typescript: 6.0.3
+    vite: 8.0.9
+  # Demo apps sometimes use older dependencies and devDependencies
+  demos:
+    '@types/node': 24.10.9
+    '@types/react': 19.2.14
+    '@types/react-dom': 19.2.3
+    react: 19.2.6
+    react-dom: 19.2.6
+    source-map-explorer: 2.5.3
+    typescript: 5.9.3
+    vite: 8.0.9
+
+  # Library-specific catalogs help with isolated testing:
+  # these are generally not used for normal dev
   react16:
     '@types/react': ^16.9.0
     '@types/react-dom': ^16.9.0
@@ -76,8 +86,8 @@ catalogs:
   react19:
     '@types/react': ^19.2.14
     '@types/react-dom': ^19.2.3
-    react: ^19.2.6
-    react-dom: ^19.2.6
+    react: ^19.2.4
+    react-dom: ^19.2.4
   typescriptLTS:
     # https://github.com/DefinitelyTyped/DefinitelyTyped#support-window
-    typescript: 5.4.x
+    typescript: 5.5.x

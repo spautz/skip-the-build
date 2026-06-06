@@ -76,10 +76,10 @@
     "@skip-the-build/vite": "workspace:^"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "catalog:",
-    "publint": "catalog:",
+    "@arethetypeswrong/cli": "catalog:packages",
+    "publint": "catalog:packages",
     "skip-the-build": "workspace:*",
-    "tsdown": "catalog:",
+    "tsdown": "catalog:packages",
     "astro": "6.3.1"
   },
   "peerDependencies": {

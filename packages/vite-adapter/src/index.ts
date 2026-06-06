@@ -1,5 +1,5 @@
 import { getExportConditions, resolveFnOrPromise, type SkipTheBuildConfig } from 'skip-the-build';
-import { type ConfigEnv, mergeConfig, type UserConfig, type UserConfigExport } from 'vite';
+import { type ConfigEnv, mergeConfig, type UserConfig } from 'vite';
 
 const getViteConfig = async (skipTheBuildConfig: SkipTheBuildConfig): Promise<UserConfig> => {
   const exportConditions = await getExportConditions(skipTheBuildConfig);
@@ -37,14 +37,14 @@ const getViteConfig = async (skipTheBuildConfig: SkipTheBuildConfig): Promise<Us
  *
  * Returning a function instead of a promise lets us support projects that don't allow top-level await.
  */
-const withSkipTheBuild = (
+const withSkipTheBuild = <TConfig extends object, TEnv = ConfigEnv>(
   skipTheBuildConfig: SkipTheBuildConfig,
-  baseViteConfig: UserConfigExport,
-): ((viteEnv: ConfigEnv) => Promise<UserConfig>) => {
-  const asyncUserConfigFn = async (viteEnv: ConfigEnv) => {
+  baseViteConfig: TConfig | Promise<TConfig> | ((viteEnv: TEnv) => TConfig | Promise<TConfig>),
+): ((viteEnv: TEnv) => Promise<TConfig>) => {
+  const asyncUserConfigFn = async (viteEnv: TEnv): Promise<TConfig> => {
     const skipTheBuildViteConfig = await getViteConfig(skipTheBuildConfig);
-    const otherConfig = await resolveFnOrPromise<UserConfig, [ConfigEnv]>(baseViteConfig, viteEnv);
-    return mergeConfig(skipTheBuildViteConfig, otherConfig);
+    const otherConfig = await resolveFnOrPromise<TConfig, [TEnv]>(baseViteConfig, viteEnv);
+    return mergeConfig(skipTheBuildViteConfig, otherConfig as object) as TConfig;
   };
   return asyncUserConfigFn;
 };

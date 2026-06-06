@@ -39,16 +39,16 @@
     "@mdx-js/react": "3.1.1",
     "clsx": "2.1.1",
     "prism-react-renderer": "2.4.1",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "react": "catalog:packages",
+    "react-dom": "catalog:packages"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.1",
     "@docusaurus/tsconfig": "3.10.1",
     "@docusaurus/types": "3.10.1",
     "@tsconfig/docusaurus": "2.0.9",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:"
+    "@types/react": "catalog:packages",
+    "@types/react-dom": "catalog:packages"
   },
   "browserslist": {
     "production": [

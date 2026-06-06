@@ -77,11 +77,11 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "catalog:",
-    "publint": "catalog:",
-    "tsdown": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "@arethetypeswrong/cli": "catalog:packages",
+    "publint": "catalog:packages",
+    "tsdown": "catalog:packages",
+    "vite": "catalog:packages",
+    "vitest": "catalog:shared"
   },
   "peerDependencies": {}
 }
